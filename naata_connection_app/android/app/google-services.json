@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "758638581246",
+    "project_id": "direct-plasma-222914",
+    "storage_bucket": "direct-plasma-222914.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758638581246:android:569cb7fedf5359759c5caf",
+        "android_client_info": {
+          "package_name": "com.techniche"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758638581246-cp376fbua1qtp628inkccgoeciapaus3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTIlHvCd__gXP-IkjRYGA6IclyDRcvg08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758638581246-cp376fbua1qtp628inkccgoeciapaus3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

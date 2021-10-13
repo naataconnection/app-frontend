@@ -1,8 +1,9 @@
+
+  
 import React, {useState} from 'react';
 import { StyleSheet, Text, View , Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from 'react-native-paper';
-import SearchBox from '../../components/SearchBox.js';
 
 const CheckBox = () =>{
 
@@ -21,7 +22,7 @@ const CheckBox = () =>{
             </View>
     );
 }
-const DayHigh = (props) => {
+const DayHigh3 = () => {
     const [textcolor, settextcolor] = useState(true)
     const [buttonbg, setbuttonbg] = useState(true)
 
@@ -40,7 +41,34 @@ const DayHigh = (props) => {
                     style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center'}}
             >
                     <View style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center',backgroundColor: buttonbg? 'black':'#7F43E1', borderColor:'#7F43E1', borderWidth:1,}}>
-                        <Text style={{color:textcolor ? '#7F43E1' : 'white', textAlign:'center', fontSize:14}}>{props.content}</Text>
+                        <Text style={{color:textcolor ? '#7F43E1' : 'white', textAlign:'center', fontSize:14}}>Day 3</Text>
+                    </View>
+                </LinearGradient>
+                    </TouchableOpacity>  
+            </View>
+    )
+}
+
+const DayHigh2 = () => {
+    const [textcolor, settextcolor] = useState(true)
+    const [buttonbg, setbuttonbg] = useState(true)
+
+    const DayHighHandler = () => {
+        setbuttonbg(!buttonbg)
+        settextcolor(!textcolor)
+    }
+    return (
+        
+            <View >
+                <TouchableOpacity onPress={DayHighHandler}>
+                <LinearGradient
+                    colors={['#A32CDF', '#106AD2' ]}
+                    start={{x: 0.5, y: 0.5}} 
+                    end={{x: 1, y: 1}}
+                    style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center'}}
+            >
+                    <View style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center',backgroundColor: buttonbg? 'black':'#7F43E1', borderColor:'#7F43E1', borderWidth:1,}}>
+                        <Text style={{color:textcolor ? '#7F43E1' : 'white', textAlign:'center', fontSize:14}}>Day 3</Text>
                     </View>
                 </LinearGradient>
                     </TouchableOpacity>  
@@ -64,7 +92,30 @@ const Schedule = () => {
         return (
 
     <View style={styles.container}>
-        <SearchBox/>
+
+        <View style={styles.searchflexcontainer}>
+            <View style={styles.searchWrapper}>
+                
+                    
+                    <TextInput 
+                        placeholder='Search'
+                        placeholderTextColor='#979797'
+                        onChangeText={text => setsearchtext(text)}
+                        clearTextOnFocus={true}
+                        style={styles.input}
+                    />
+                    <View style={styles.searchicon}>
+                    <IconButton icon={'magnify'} color="#979797" size={25} style={{marginLeft : 80,}} />  
+                    </View>
+                    <View style={styles.searchicon}>
+                        <IconButton icon={'power-on'} color="#979797" size={25}  />  
+                    </View>
+                    <View style={styles.searchicon}>
+                        <IconButton icon={'menu'} color="#979797" size={25}  />   
+                    </View>
+                    
+            </View>
+        </View>
 
         <View style={styles.scheduleflexcontainer}>
             <View style={styles.eventScheduleWrapper}>
@@ -83,10 +134,20 @@ const Schedule = () => {
         <View style={styles.daysContainer}>
             <View style={styles.days}>
                 
-            
-                <DayHigh content="Day 1"/>
-                <DayHigh content="Day 2"/>
-                <DayHigh content="Day 3"/>
+            <LinearGradient
+                    colors={['#A32CDF', '#106AD2' ]}
+                    start={{x: 0.5, y: 0.5}} 
+                    end={{x: 1, y: 1}}
+                    style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center'}}
+            >
+                
+                    <Text style={styles.DaybuttonHighText}>Day 1</Text>
+                
+            </LinearGradient>
+                
+                
+                <DayHigh2/>
+                <DayHigh3/>
                 
             </View>
         </View>
@@ -221,11 +282,6 @@ container: {
 flex: 1,
 alignItems: 'center',
 },
-eventholder:{
-      width: 100, 
-      height: 34,
-      justifyContent: 'center',
-    },
 eventScheduleWrapper: {
     flex: 1,
     flexDirection: 'row',
@@ -241,6 +297,30 @@ scheduleflexcontainer: {
     height: 44,
     borderRadius: 8,
     marginTop:5,
+    },
+searchflexcontainer: {
+    width: 320,
+    height: 44,
+    borderRadius: 8,
+    marginTop:5,
+    },
+searchWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    width: 320.51,
+    height: 42,
+    marginTop:5,
+    backgroundColor:'#1E1E1E',
+    borderRadius: 8,
+    justifyContent: 'space-between',
+    },
+    input: {
+        fontFamily: 'SF Pro Display',
+        fontStyle: 'normal',
+        fontSize: 12,
+        paddingLeft: 17,
+        color: '#979797',
+        width: 100,
     },
     Contentheading: {
         flex: 1,
@@ -259,6 +339,16 @@ eventScheduleText: {
     width: 150,
     height: 15,
 },
+searchbar: {
+    fontFamily: 'SF Pro Display',
+    fontStyle: 'normal',
+    fontSize: 14,
+    lineHeight: 18.2,
+    paddingLeft: 9,
+    width: 100,
+    height: 15,
+    color:'white',
+    },
 daysContainer: {
     width: 320.51,
     height: 34,
@@ -301,6 +391,10 @@ days: {
         justifyContent: 'space-between',},
 eventholder:{
     width: 100, 
+    height: 34,
+    justifyContent: 'center',
+},
+searchicon:{
     height: 34,
     justifyContent: 'center',
 },
@@ -377,12 +471,29 @@ Corp: {
         marginLeft: 72,
         marginTop: 1,
         },
+    search: {
+        width: 18,
+        height: 18,
+        marginLeft: 140,
+        marginTop: 1,
+            },
     info: {
         width: 18,
         height: 18,
         marginTop: 1,
         marginLeft: 11.5,
             },
+    vertical: {
+        width: 1.5,
+        height: 18,
+        marginTop: 1,
+        left:68,
+    },
+    menu:{
+        width: 18,
+        height: 18,
+        marginTop: 4,
+    },
         bgblack: {
             width: 99, 
             height: 32.5,

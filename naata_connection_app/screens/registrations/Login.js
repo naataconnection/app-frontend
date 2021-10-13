@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View , Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button} from 'react-native';
+import { StyleSheet, Text, View , Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from 'react-native-paper';
+import GeneralGradientButton from '../../components/GeneralGradientButton';
 
 
 
 const GradientButton = (props) => {
     return(
-        <View style={styles.gradientButtonContainer}>
+        <TouchableHighlight style={styles.gradientButtonContainer} onPress={props.onPress}>
             <LinearGradient
             start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#A32CDF' , '#106AD2']} 
             style={styles.gradientButtonWrapper}
@@ -16,11 +17,11 @@ const GradientButton = (props) => {
                     <Text style={styles.gradientButtonText}>Log In With {props.content}</Text>
                 </View>
             </LinearGradient>
-        </View>
+        </TouchableHighlight>
     )
 }
 
-const Login = () => {
+const Login = ({navigation}) => {
 
 const [hidePassword, setHidePassword] = useState(true)
 const [email, setEmail] = useState('')
@@ -34,7 +35,6 @@ const hidePasswordHandler = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView keyboardShouldPersistTaps='handled'>
-                <IconButton icon="less-than" color='#979797' size={20} onPress={() => console.log('Pressed')} style={{position: 'absolute', top: 40}}/>
                 
                 <Image source={require('../../assets/Techniche_logo.png')} style={styles.image1}/>
                 
@@ -54,7 +54,6 @@ const hidePasswordHandler = () => {
                             placeholderTextColor='#979797'
                             onChangeText={text => setPassword(text)}
                             secureTextEntry={hidePassword}
-                            autoFocus={true}
                             style={styles.input}
                         />
                         <IconButton icon={hidePassword ? 'eye-outline' : 'eye-off-outline'} color="#979797" size={18} onPress={hidePasswordHandler} />
@@ -62,17 +61,10 @@ const hidePasswordHandler = () => {
 
                 </View>
                 
-                <View>
-                    <LinearGradient 
-                    colors={['#A32CDF', '#106AD2']} 
-                    start={{ x: 0, y: 0.7}} end={{x: 1, y: 0.7}}
-                    style={styles.buttonWrapper}
-                    >
-                        <Text style={styles.login}>
-                            Log In
-                        </Text>
-                    </LinearGradient>
-                </View>
+                <GeneralGradientButton 
+                    onPress={()=> navigation.navigate('Tabs')}
+                    content="Log In"
+                />
                 
                 <Text style={styles.or}>OR</Text>
                 
@@ -92,7 +84,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image1: {
-        marginTop: 170,
+        marginTop: 40,
         marginLeft: 117,
         marginRight: 118,
         width: 125,
@@ -103,7 +95,7 @@ const styles = StyleSheet.create({
         height: 91,
         marginHorizontal: 62,
         marginTop: 9,
-        marginBottom: 70,
+        marginBottom: 50,
     },
     inputWrapper : {
         width: 320 ,
@@ -181,4 +173,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Login
+export default Login;

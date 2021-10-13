@@ -1,150 +1,28 @@
 import { Assets } from '@react-navigation/stack';
-import React, {useState} from 'react';
+import { Dimensions } from 'react-native';
+import React, {useState, useEffect} from 'react';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
-import {ImageBackground, StyleSheet, Text, SafeAreaView, ScrollView, StatusBar,View, Image,TouchableHighlight,TouchableOpacity} from 'react-native';
+import {ImageBackground, StyleSheet, Text, SafeAreaView, ScrollView, StatusBar,View, Image,TouchableHighlight, ActivityIndicator,TouchableWithoutFeedback, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { IconButton, Colors } from 'react-native-paper';
+import RectangleCard from '../../components/RectangleCard';
+import SquareCard from '../../components/SquareCard';
+import SearchBox from '../../components/SearchBox.js';
+import { useSelector, connect } from 'react-redux';
+import {setEvents} from '../../store/Action';
+import { event } from 'react-native-reanimated';
 
-var tag="";
-var iconSwapR = false; //For Rectangle Card
-var iconSwapS = false; //For Square Card
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
-styleTag = function(){
-  if(tag=="Live")
-  {
-    return (
-      {
-        display:'flex',
-        alignItems:'center',
-        justifyContent:'space-between',
-        backgroundColor:'#FF7388',
-        borderRadius:4,
-        position:'absolute',
-        top:5,
-        left:5,
-        paddingTop:0,
-        paddingLeft:4,
-        paddingRight:4,
-        textTransform: 'uppercase',
-      }
-    );
-  }
-  else if(tag=="Reg. Open")
-  {
-    return (
-      {
-        backgroundColor:'#13BD8A',
-        borderRadius:4,
-        position:'absolute',
-        top:5,
-        left:5,
-        padding:5,
-      }
-    );
-  }
-  else if(tag=="Reg. Closed"){
-    return (
-      {
-        backgroundColor:'#FF7388',
-        borderRadius:4,
-        position:'absolute',
-        top:5,
-        left:5,
-        padding:5,
-      }
-    );
-  }
-  else if(tag!= null){
-    return (
-      {
-        backgroundColor:'#FFC716',
-        borderRadius:4,
-        position:'absolute',
-        top:5,
-        left:5,
-        padding:5,
-      }
-    );
-  }
-};
-
-const RectangleCard = (props) =>{
-
-  const [icon,setIcon] = useState("heart-outline");
-  tag=props.tag;
+const RectangleMoreCard = (props) =>{
   return (
-    <View style={styles.rectanglecard}>
-      <ImageBackground source={require('../../assets/bg.png')} style={styles.cardimage} imageStyle={{ borderRadius: 6}}>
-        <View style={styleTag()}>
-          <Text style={styles.tag} fontWeight={400} >{props.tag=="Live"?props.tag.toUpperCase(): props.tag} {props.tag=="Live"? <Text style={{fontSize:20}} >●</Text>: null}
-          </Text>
-        </View>
-        
-      <View style={styles.cardcontainer}>
-        <Image blurRadius={10} source={require('../../assets/bg.png')} style={styles.cardcontainerimage} />    
-        <IconButton icon={icon} 
-        //onPress={()=>setIcon('heart')} onLongPress={()=>setIcon('heart-outline')}
-         onPress={()=> {
-           if(iconSwapR==false)
-           {
-             setIcon('heart');
-             iconSwapR= true;
-           }
-           else{
-             setIcon('heart-outline');
-             iconSwapR= false;
-           }
-        }} 
-          style={styles.like} color="white" size={32}/>
-          <Text style={styles.carddate}>25 September, 2:00 - 5:00 PM</Text>          
-          <Text style={styles.cardsubtitle}>After The Sunset</Text>          
-          <Text style={styles.cardtitle}>As We Keep Searching</Text>
+    <TouchableWithoutFeedback onPress={props.onPress}>
+      <View style={styles.rectmorecard}>
+        <Text style={styles.rectmorecardtext}>+10 More</Text>
       </View>
-      </ImageBackground>
-    </View>
-  );
-}
-
-const RectangleMoreCard = () =>{
-  return (
-    <View style={styles.rectmorecard}>
-      <Text style={styles.rectmorecardtext}>+10 More</Text>
-    </View>
-  );
-}
-
-const SquareCard = (props) =>{
-  const [icon,setIcon] = useState("heart-outline");
-  tag=props.tag;
-  return (
-    <View style={styles.squarecard}>
-      <ImageBackground source={require('../../assets/bg_square.png')} style={styles.cardimage} imageStyle={{ borderRadius: 6}}>
-        <View style={styleTag()}>
-          <Text style={styles.tag} fontWeight={400} >{props.tag=="Live"?props.tag.toUpperCase(): props.tag} {props.tag=="Live"? <Text style={{fontSize:20}} >●</Text>: null}
-          </Text>
-        </View>
-      <View style={styles.cardcontainer}>
-        <Image blurRadius={10} source={require('../../assets/bg_square.png')} style={styles.cardcontainerimage} />    
-        <IconButton icon={icon} 
-        //onPress={()=>setIcon('heart')} onLongPress={()=>setIcon('heart-outline')}
-         onPress={()=> {
-           if(iconSwapS==false)
-           {
-             setIcon('heart');
-             iconSwapS= true;
-           }
-           else{
-             setIcon('heart-outline');
-             iconSwapS= false;
-           }
-         }} 
-          style={styles.like} color="white" size={32}/>  
-          <Text style={styles.carddate}>25 September, 7:00 PM</Text>          
-          <Text style={styles.cardsubtitle}>After The Sunset</Text>          
-          <Text style={styles.cardtitle}>The Local Train</Text>
-      </View>
-      </ImageBackground>
-    </View>
+    </TouchableWithoutFeedback>
+    
   );
 }
 
@@ -156,45 +34,99 @@ const SquareMoreCard = () =>{
   );
 }
 
-const AllEvents = () => {
+const AllEvents = (props) => {
+
+  const allEvents = props.allEvents;
+  // console.log("ALLEVENTS");
+  console.log(allEvents);
+  // console.log(typeof allEvents);
+  // console.log(Object.keys(allEvents).length);
+  const ongoingEvents = allEvents.filter(event => event.status == 'Ongoing');
+  const upcomingEvents = allEvents.filter(event => event.status == 'Upcoming');
+  const concludedEvents = allEvents.filter(event => event.status == 'Concluded');
+  
+  useEffect(()=>{
+    props.setEvents();
+  },[props.loaded])
+
+  if(!props.loaded) {
+    return (
+      <ActivityIndicator size="large" color="#ffffff"></ActivityIndicator>
+    )
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView >
-        <View style={styles.scrollView}>
-          <Text style={styles.heading}>Ongoing Events</Text>
-          <ScrollView  horizontal={true} >
-            <RectangleCard tag="Live" />
-            <RectangleCard tag="Reg. Open" />
-            <RectangleCard tag="Reg. Closed" />
-            <RectangleMoreCard/>
-          </ScrollView>
+      <ScrollView styel={{flexDirection:'column', flex:4}}>
+        <View style={styles.searchBoxContainer}>
+          <SearchBox/>
         </View>
         <View style={styles.scrollView}>
+          <Text style={styles.heading}>Ongoing Events</Text>
+          <ScrollView  horizontal={true} style={{flexDirection:'row'}}>
+            
+            {upcomingEvents.length!=0 &&  upcomingEvents.map(event => (
+              <RectangleCard
+                key={event.id}
+                tag={event.details.tag}
+                title={event.name}
+                subtitle={event.details.module}
+                date={event.details.period}
+                imageUrl={event.details.image_url}
+                // onPress={()=>{console.log(event.e_id)}}
+                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
+              />
+
+            ))}
+            <RectangleMoreCard onPress={()=>{props.navigation.navigate('EventList')}}/>
+          </ScrollView>
+        </View>
+        
+        <View style={styles.scrollView}>
         <Text style={styles.heading}>Upcoming Events</Text>
-          <View style={styles.upcomingevents}>
-            <SquareCard tag="Reg. Open"></SquareCard>
+          <ScrollView horizontal={true}>
+            <SquareCard tag="Reg. Open" onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id:'E21002'})}}></SquareCard>
             <SquareCard tag="Starts in 5h"></SquareCard>
-          </View>
-          <View style={styles.upcomingevents}>
             <SquareCard tag="Reg. Closed"></SquareCard>
             <SquareMoreCard></SquareMoreCard>
-          </View>
+          </ScrollView>
+          {/* <View style={styles.upcomingevents}>
+            <SquareCard tag="Reg. Closed"></SquareCard>
+            <SquareMoreCard></SquareMoreCard>
+          </View> */}
         </View>
         <View style={styles.scrollView}>
           <Text style={styles.heading}>You May Also Like</Text>
           <ScrollView  horizontal={true}>
-            <RectangleCard tag="Reg. Open" />
-            <RectangleCard tag="Starts in 5h"/>
-            <RectangleCard tag="Reg. Open" />
+          {upcomingEvents.length!=0 &&  upcomingEvents.map(event => (
+              <RectangleCard
+                key={event.id}
+                tag={event.details.tag}
+                title={event.name}
+                subtitle={event.details.module}
+                date={event.details.period}
+                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
+              />
+
+          ))}
           <RectangleMoreCard/>
           </ScrollView>
         </View>
         <View style={styles.scrollView}>
           <Text style={styles.heading}>Concluded Events</Text>
           <ScrollView  horizontal={true}>
-            <SquareCard tag="Reg. Open"/>
-            <SquareCard tag="Starts in 5h"/>
-            <SquareCard tag="Reg. Open"/>
+            {concludedEvents.length!=0 &&  concludedEvents.map(event => (
+              <SquareCard
+                key={event.e_id}
+                tag={event.details.tag}
+                title={event.name}
+                subtitle={event.details.module}
+                date={event.details.period}
+                imageUrl={event.details.image_url}
+                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
+              />
+            ))
+            }
             <SquareMoreCard/>
           </ScrollView>
         </View>        
@@ -204,10 +136,15 @@ const AllEvents = () => {
 }
 
 const styles = StyleSheet.create({
-  upcomingevents:{
-    flex:2,
-    flexDirection:'row',
+  searchBoxContainer:{
+    paddingLeft: '8%'
+    // alignItems: 'center',
+
   },
+  // upcomingevents:{
+  //   flex:2,
+  //   flexDirection:'row',
+  // },
   cardcontainer:{
     flex:3,
     flexDirection:'column-reverse',
@@ -251,27 +188,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height:146,
+    alignItems: 'center',
   },
   scrollView: {
     marginHorizontal: 20,
-    
   },
   text: {
     fontSize: 42,
-  },
-  rectanglecard:{
-    width: 320,
-    height: 170,
-    borderRadius: 8,
-    margin:10,
   },
   rectmorecard:{
     backgroundColor:'#1E1E1E',
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-    width: 320,
-    height: 170,
+    width: windowWidth*0.8,
+    height: windowHeight*0.25,
     borderRadius: 8,
     margin:10,
   },
@@ -299,12 +230,6 @@ const styles = StyleSheet.create({
     lineHeight:15.71,
     marginTop:20,
   },
-  squarecard:{
-    height:250,
-    width:170,
-    borderRadius: 8,
-    margin:10,
-  },
   like:{
     position:'absolute',
     top:0,
@@ -316,4 +241,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AllEvents;
+const mapStateToProps = state => ({
+  allEvents: state.events.allEvents,
+  loaded: state.events.loaded
+})
+
+export default connect(mapStateToProps, {setEvents})(AllEvents);

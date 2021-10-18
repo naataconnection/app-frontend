@@ -34,50 +34,22 @@ const SquareMoreCard = () =>{
   );
 }
 
-const AllEvents = (props) => {
-
-  const allEvents = props.allEvents;
-  // console.log("ALLEVENTS");
-  console.log(allEvents);
-  // console.log(typeof allEvents);
-  // console.log(Object.keys(allEvents).length);
-  const ongoingEvents = allEvents.filter(event => event.status == 'Ongoing');
-  const upcomingEvents = allEvents.filter(event => event.status == 'Upcoming');
-  const concludedEvents = allEvents.filter(event => event.status == 'Concluded');
-  
-  useEffect(()=>{
-    props.setEvents();
-  },[props.loaded])
-
-  if(!props.loaded) {
-    return (
-      <ActivityIndicator size="large" color="#ffffff"></ActivityIndicator>
-    )
-  }
-  
+const AllEvents = (props) => {  
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView styel={{flexDirection:'column', flex:4}}>
-        <View style={styles.searchBoxContainer}>
-          <SearchBox/>
-        </View>
+      <ScrollView style={{flexDirection:'column', flex:4}}>
         <View style={styles.scrollView}>
           <Text style={styles.heading}>Ongoing Events</Text>
           <ScrollView  horizontal={true} style={{flexDirection:'row'}}>
-            
-            {upcomingEvents.length!=0 &&  upcomingEvents.map(event => (
               <RectangleCard
-                key={event.id}
-                tag={event.details.tag}
-                title={event.name}
-                subtitle={event.details.module}
-                date={event.details.period}
-                imageUrl={event.details.image_url}
-                // onPress={()=>{console.log(event.e_id)}}
-                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
+                key="1234"
+                tag="Reg. Open"
+                title="Demo"
+                subtitle="Subtitle Demo"
+                date="2020-01-01"
+                imageUrl="../../assets/Techniche.png"
+                // onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
               />
-
-            ))}
             <RectangleMoreCard onPress={()=>{props.navigation.navigate('EventList')}}/>
           </ScrollView>
         </View>
@@ -85,51 +57,26 @@ const AllEvents = (props) => {
         <View style={styles.scrollView}>
         <Text style={styles.heading}>Upcoming Events</Text>
           <ScrollView horizontal={true}>
-            <SquareCard tag="Reg. Open" onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id:'E21002'})}}></SquareCard>
+            {/* <SquareCard tag="Reg. Open" onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id:'E21002'})}}></SquareCard> */}
             <SquareCard tag="Starts in 5h"></SquareCard>
             <SquareCard tag="Reg. Closed"></SquareCard>
             <SquareMoreCard></SquareMoreCard>
           </ScrollView>
-          {/* <View style={styles.upcomingevents}>
-            <SquareCard tag="Reg. Closed"></SquareCard>
-            <SquareMoreCard></SquareMoreCard>
-          </View> */}
         </View>
         <View style={styles.scrollView}>
           <Text style={styles.heading}>You May Also Like</Text>
           <ScrollView  horizontal={true}>
-          {upcomingEvents.length!=0 &&  upcomingEvents.map(event => (
-              <RectangleCard
+              {/* <RectangleCard
                 key={event.id}
                 tag={event.details.tag}
                 title={event.name}
                 subtitle={event.details.module}
                 date={event.details.period}
-                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
-              />
-
-          ))}
+                // onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
+              /> */}
           <RectangleMoreCard/>
           </ScrollView>
         </View>
-        <View style={styles.scrollView}>
-          <Text style={styles.heading}>Concluded Events</Text>
-          <ScrollView  horizontal={true}>
-            {concludedEvents.length!=0 &&  concludedEvents.map(event => (
-              <SquareCard
-                key={event.e_id}
-                tag={event.details.tag}
-                title={event.name}
-                subtitle={event.details.module}
-                date={event.details.period}
-                imageUrl={event.details.image_url}
-                onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
-              />
-            ))
-            }
-            <SquareMoreCard/>
-          </ScrollView>
-        </View>        
       </ScrollView>
     </SafeAreaView> 
   );
@@ -241,9 +188,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({
-  allEvents: state.events.allEvents,
-  loaded: state.events.loaded
-})
-
-export default connect(mapStateToProps, {setEvents})(AllEvents);
+export default AllEvents;

@@ -1,11 +1,10 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, Text, View , Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 
-const GeneralGradientButton = (props) => {
+const OrangeButton = (props) => {
     
-    const [verifyingMsg, setVerifyingMsg] = useState(`${props.verifyingMsg}   `);
+    const [verifyingMsg, setVerifyingMsg] = useState(`${props.verifyingMsg}`);
     let verifyingInterval = false;
     const verifyingMsgRef = useRef(verifyingMsg);
 
@@ -34,16 +33,12 @@ const GeneralGradientButton = (props) => {
     },[props.verifying]);
 
     return (
-        <TouchableHighlight onPress={props.onPress} style={[props.style,{borderRadius:8}]}>
-            <LinearGradient 
-                colors={['#F3752B', '#00B4D8']} 
-                start={{ x: 0, y: 0.7}} end={{x: 1, y: 0.7}}
-                style={styles.buttonWrapper}
-                >
-                <Text style={styles.textCenter}>
+        <TouchableHighlight onPress={props.onPress} style={[props.style,{borderRadius:16}]}>
+            <Button style={styles.buttonWrapper} title={props.content}>
+                <Text style={styles.buttonText}>
                     {props.verifying?verifyingMsg:props.content}
                 </Text>
-            </LinearGradient>
+            </Button>
         </TouchableHighlight>
     )
    
@@ -65,4 +60,4 @@ const styles = StyleSheet.create({
    
     
 })
-export default GeneralGradientButton;
+export default OrangeButton;

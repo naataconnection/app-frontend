@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import  Schedule  from "../screens/schedules/Allschedule";
 // import Notification from "../screens/notifications/notification";
 import Allevents from "../screens/home/Allevents";
-import SignUp from '../screens/registrations/SignUp';
+import GetOTP from '../screens/registrations/GetOTP';
 import Login from '../screens/registrations/Login';
 // import Map from '../screens/map/Map';
 import Directory from '../screens/Directory/Directory';
@@ -148,9 +148,10 @@ const TabScreen = () =>{
 class AppNavigator extends React.Component  {
     render() {
         return (
-            <NavigationContainer theme={DarkTheme}>
+            <NavigationContainer theme={DefaultTheme}>
               <Drawer.Navigator initialRouteName="Login" drawerContent={props=><DrawerContent {...props} />} >
                 <Drawer.Screen name="Login" component={Login} options={{header:Header, headerShown:false}} />
+                {/* <Drawer.Screen name="GetOTP" component={GetOTP} options={{header:Header, headerShown:false}} /> */}
                 <Drawer.Screen name="Directory" component={directoryTab} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="Tabs" component={TabScreen} />
                 <Drawer.Screen name="Team" component={Team} options={{header:Header, headerShown:true}} />

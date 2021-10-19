@@ -79,7 +79,7 @@ const RectangleCard = (props) => {
         <ImageBackground source={imageUrl} style={styles.cardimage} imageStyle={{ borderRadius: 32 }}>
           <View style={styles.cardcontainer}>
             <Image blurRadius={10} source={require('../assets/bg.png')} style={styles.cardcontainerimage} />
-            {/* <Icon name="close" size={36} style={styles.like} color="#000000" /> */}
+            <Image source={require('../assets/naata_images/close.png')} style={styles.like} />
             <View style={styles.cardContent}>
               <Text style={styles.cardtitle}>{props.title}</Text>
               <Text style={styles.cardsubtitle}>{props.subtitle}</Text>
@@ -143,8 +143,10 @@ const styles = StyleSheet.create({
   },
   like: {
     position: 'absolute',
-    top: 0,
-    right: 2,
+    top: windowHeight*0.015,
+    right: windowWidth*0.05,
+    width: 20,
+    height: 20
   },
   tag: {
     color: "white",

@@ -30,6 +30,7 @@ const Login = ({ navigation }) => {
                 </View>
 
                 <View style={styles.inputWrapper1}>
+                <Image source={require('../../assets/naata_images/user.png')} style={styles.icon}/>
                     <TextInput
                         placeholder='E-Mail or Phone Number'
                         placeholderTextColor='#FFFFFF'
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         borderColor: blue.border,
         backgroundColor: blue.info,
         flexDirection: 'row',
-        alignContent: 'flex-start'
+        alignContent: 'flex-start',
     },
     inputWrapper2: {
         flexDirection: 'row-reverse',
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         fontWeight: font4.fontWeight,
         color: '#FFFFFF',
         width: windowWidth * 0.80,
-        marginLeft: windowWidth * 0.05
+        marginLeft: windowWidth * 0.1
     },
     buttonWrapper: {
         flex: 1,
@@ -109,6 +110,13 @@ const styles = StyleSheet.create({
     nextButton: {
         height: windowHeight * 0.085,
         width: windowWidth * 0.16
+    },
+    icon:{
+        position: 'absolute',
+        top: windowHeight*0.012,
+        left: windowWidth*0.025,
+        height: 32,
+        width: 32
     }
 })
 

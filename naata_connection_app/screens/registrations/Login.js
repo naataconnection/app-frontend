@@ -22,10 +22,11 @@ const Login = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollViewContainer}>
+            <View keyboardShouldPersistTaps='handled' style={styles.scrollViewContainer}>
 
                 <View style={styles.logoView}>
                     <Image source={require('../../assets/naata_images/final_logo.png')} style={styles.logoImage} />
+                    {/* <Image source={require('../../assets/naata_images/naata.png')} style={styles.logoText} /> */}
                     <Text style={styles.logoText}>NAATA</Text>
                 </View>
 
@@ -40,40 +41,46 @@ const Login = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.inputWrapper2}>
-                    <TouchableHighlight onPress={()=> navigation.navigate('Tabs')}>
+                    <Text style={styles.nextLogin}>Next</Text>
+                    <TouchableHighlight onPress={()=> navigation.navigate('GetOTP')}>
                         <Image source={require('../../assets/naata_images/nextButton.png')} style={styles.nextButton}></Image>
                     </TouchableHighlight>
                 </View>
-            </ScrollView>
+            </View>
         </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         backgroundColor: '#FFFFFF',
-        alignItems: 'center',
+        // alignItems: 'center',
+        height: windowHeight
     },
     scrollViewContainer: {
         flexDirection: 'column',
         marginTop: windowHeight * 0.30,
+        justifyContent:'center',
+        alignItems: 'center',
+        // flex: 1
     },
     logoView: {
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: windowHeight * 0.02
+        alignContent: 'center',
+        marginBottom: windowHeight * 0.05,
+        width: windowWidth*0.4,
     },
     logoImage: {
         width: windowWidth * 0.30,
         height: 125,
     },
     logoText: {
-        fontFamily: font1.fontFamily,
-        fontSize: font1.fontSize,
-        fontWeight: '800',
-        fontStyle: font2.fontStyle
+        fontFamily: 'Sofia Pro',
+        fontSize: 32,
+        fontWeight: '700'
     },
     inputWrapper1: {
         width: windowWidth * 0.8,
@@ -83,10 +90,13 @@ const styles = StyleSheet.create({
         borderColor: blue.border,
         backgroundColor: blue.info,
         flexDirection: 'row',
-        alignContent: 'flex-start',
+        alignContent: 'flex-end',
     },
     inputWrapper2: {
-        flexDirection: 'row-reverse',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     input: {
         fontFamily: font4.fontFamily,
@@ -109,8 +119,15 @@ const styles = StyleSheet.create({
     },
     nextButton: {
         height: windowHeight * 0.085,
-        width: windowWidth * 0.16
+        width: windowWidth * 0.16,
+        marginLeft: windowWidth*0.025
     },
+    nextLogin:{
+        fontFamily: 'Sofia Pro',
+        fontWeight: '700',
+        fontSize: 24,
+        marginRight: windowWidth*0.025
+    },  
     icon:{
         position: 'absolute',
         top: windowHeight*0.012,

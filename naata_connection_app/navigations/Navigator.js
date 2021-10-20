@@ -151,7 +151,7 @@ class AppNavigator extends React.Component  {
             <NavigationContainer theme={DefaultTheme}>
               <Drawer.Navigator initialRouteName="Login" drawerContent={props=><DrawerContent {...props} />} >
                 <Drawer.Screen name="Login" component={Login} options={{header:Header, headerShown:false}} />
-                {/* <Drawer.Screen name="GetOTP" component={GetOTP} options={{header:Header, headerShown:false}} /> */}
+                <Drawer.Screen name="GetOTP" component={GetOTP} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="Directory" component={directoryTab} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="Tabs" component={TabScreen} />
                 <Drawer.Screen name="Team" component={Team} options={{header:Header, headerShown:true}} />

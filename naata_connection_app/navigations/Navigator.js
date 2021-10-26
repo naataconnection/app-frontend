@@ -17,6 +17,7 @@ import IndividualEvent from '../screens/home/IndividualEvent';
 import DrawerContent from '../components/DrawerContent';
 import Header from "../components/Header";
 import FAQ from '../screens/drawer/FAQs';
+import Order from "../screens/schedules/Order";
 
 
 const Events = ({navigation}) => {
@@ -137,7 +138,7 @@ const TabScreen = () =>{
       >
         <Tab.Screen name="Home" component={homeTab} />
         <Tab.Screen name="Schedule" component={scheduleTab} />
-        <Tab.Screen name="Map" component={scheduleTab} />
+        <Tab.Screen name="Map" component={Order} />
         {/* <Tab.Screen name="Podcast" component={podcastTab} /> */}
     </Tab.Navigator>
   );

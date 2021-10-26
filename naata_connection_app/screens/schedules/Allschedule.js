@@ -1,396 +1,273 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View , Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { IconButton } from 'react-native-paper';
-import SearchBox from '../../components/SearchBox.js';
+import { Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 
-const CheckBox = () =>{
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
+const _renderItem =  ({ item}, navigation) => {
+    return (
+        <View style={styles.carouselView}>
+          <View style={styles.innerCarouselView}>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                Service Code
+            </Text>
+            <Text style={[styles.cardText, {flex: 1}]}>
+                :
+            </Text>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                {item.serviceCode}
+            </Text>
+          </View>
+          <View style={styles.innerCarouselView}>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                Service Code
+            </Text>
+            <Text style={[styles.cardText, {flex: 1}]}>
+                :
+            </Text>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                {item.serviceCode}
+            </Text>
+          </View>
+          <View style={styles.innerCarouselView}>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                Service Code
+            </Text>
+            <Text style={[styles.cardText, {flex: 1}]}>
+                :
+            </Text>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                {item.serviceCode}
+            </Text>
+          </View>
+          <View style={styles.innerCarouselView}>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                Service Code
+            </Text>
+            <Text style={[styles.cardText, {flex: 1}]}>
+                :
+            </Text>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                {item.serviceCode}
+            </Text>
+          </View>
+          <View style={styles.innerCarouselView}>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                Service Code
+            </Text>
+            <Text style={[styles.cardText, {flex: 1}]}>
+                :
+            </Text>
+            <Text style={[styles.cardText, {flex: 3}]}>
+                {item.serviceCode}
+            </Text>
+          </View>
+          <View style={styles.lastCarouselRow}>
+              <TouchableHighlight onPress={item.mapping_func}>
+                <View style={styles.CarouselButton}>
+                    <Text>
+                        View Request
+                    </Text>
+                </View>
+              </TouchableHighlight>
+          </View>
+        </View>
+      )
+  }
+    
+const Schedule = ({ navigation }) => {
 
-    const [plus, setplus] = useState(true)
+    const [activeIndex, setActiveIndex] = useState(4);
 
-    const plusHandler = () => {
-        setplus(!plus)
-    } 
+    const carouselItems = [
+        {
+            serviceCode:"serviceCode1",
+            customer: "customer1",
+            superUser:"superUser1",
+            status:'Active',
+            startDate:'2020-01-01',
+            mapping_func : () => {
+                navigation.navigate('GetOTP')
+            }
+        },
+        {
+            serviceCode:"serviceCode2",
+            customer: "customer2",
+            superUser:"superUser2",
+            status:'Active',
+            startDate:'2020-01-01'
+        },
+        {
+            serviceCode:"serviceCode3",
+            customer: "customer3",
+            superUser:"superUser3",
+            status:'Active',
+            startDate:'2020-01-01'
+        },
+        {
+            serviceCode:"serviceCode4",
+            customer: "customer4",
+            superUser:"superUser4",
+            status:'Active',
+            startDate:'2020-01-01'
+        },
+        {
+            serviceCode:"serviceCode5",
+            customer: "customer5",
+            superUser:"superUser5",
+            status:'Active',
+            startDate:'2020-01-01'
+        },
+    ];
 
     return (
-        <View style={styles.eventholder}>
-            <TouchableOpacity onPress={plusHandler} >
-                <Image  source={plus ? require('../../assets/icons/linplus.png') : require('../../assets/icons/cross-icon.png')} color="#979797" size={20}  style={{marginLeft:95 , marginTop: 1,}}  />
-            </TouchableOpacity>
-            </View>
+        <SafeAreaView style={styles.serviceContainer}>
+            <ScrollView>
+                <View style={styles.innerServiceContainer}>
+                    <View style={styles.serviceRow}>
+                        <Text style={styles.activeText}>
+                            Active
+                        </Text>
+                        <Text style={styles.filterText}>
+                            Fitler
+                        </Text>
+                    </View>
+                    
+                        <View style={styles.serviceCarousel}>
+                            <Carousel
+                            layout={"default"}
+                            // ref={ref => this.carousel = ref}
+                            data={carouselItems}
+                            sliderWidth={windowWidth}
+                            itemWidth={windowWidth*0.7}
+                            renderItem={_renderItem}
+                            onSnapToItem = { index => setActiveIndex(index) } 
+                            />
+                        </View>
+                </View>
+                <View style={styles.innerServiceContainer}>
+                    <View style={styles.serviceRow}>
+                        <Text style={styles.activeText}>
+                            Active
+                        </Text>
+                        <Text style={styles.filterText}>
+                            Fitler
+                        </Text>
+                    </View>
+                    <View style={styles.serviceCarousel}>
+                        <Carousel
+                        layout={"default"}
+                        // ref={ref => this.carousel = ref}
+                        data={carouselItems}
+                        sliderWidth={windowWidth}
+                        itemWidth={windowWidth*0.7}
+                        renderItem={_renderItem}
+                        onSnapToItem = { index => setActiveIndex(index) } 
+                        />
+                    </View>
+                </View>
+                <View style={styles.innerServiceContainer}>
+                    <View style={styles.serviceRow}>
+                        <Text style={styles.activeText}>
+                            Active
+                        </Text>
+                        <Text style={styles.filterText}>
+                            Fitler
+                        </Text>
+                    </View>
+                    <View style={styles.serviceCarousel}>
+                        <Carousel
+                        layout={"default"}
+                        // ref={ref => this.carousel = ref}
+                        data={carouselItems}
+                        sliderWidth={windowWidth}
+                        itemWidth={windowWidth*0.7}
+                        renderItem={_renderItem}
+                        onSnapToItem = { index => setActiveIndex(index) } 
+                        />
+                    </View>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
-const DayHigh = (props) => {
-    const [textcolor, settextcolor] = useState(true)
-    const [buttonbg, setbuttonbg] = useState(true)
-
-    const DayHighHandler = () => {
-        setbuttonbg(!buttonbg)
-        settextcolor(!textcolor)
-    }
-    return (
-        
-            <View >
-                <TouchableOpacity onPress={DayHighHandler}>
-                <LinearGradient
-                    colors={['#A32CDF', '#106AD2' ]}
-                    start={{x: 0.5, y: 0.5}} 
-                    end={{x: 1, y: 1}}
-                    style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center'}}
-            >
-                    <View style={{borderRadius: 8, width: 100, height: 33.5, justifyContent: 'center',backgroundColor: buttonbg? 'black':'#7F43E1', borderColor:'#7F43E1', borderWidth:1,}}>
-                        <Text style={{color:textcolor ? '#7F43E1' : 'white', textAlign:'center', fontSize:14}}>{props.content}</Text>
-                    </View>
-                </LinearGradient>
-                    </TouchableOpacity>  
-            </View>
-    )
-}
-
-
-const Schedule = () => {
-
-    
-
-    const [dropdown, setdropdown] = useState(true)
-    
-    const dropdownhandler = () => {
-    
-        setdropdown(!dropdown)
-    }
-    const [searchtext, setsearchtext] = useState('')
-    
-        return (
-
-    <View style={styles.container}>
-        <SearchBox/>
-
-        <View style={styles.scheduleflexcontainer}>
-            <View style={styles.eventScheduleWrapper}>
-                
-                    <View style={styles.eventholder}>
-                        <Text style={styles.eventScheduleText}>Event Schedule</Text>
-                    </View>
-                    <View style={styles.eventholder}>
-                    <IconButton icon={dropdown ? 'chevron-down' : 'chevron-up'} color="#7F43E1" size={30} style={{marginLeft : 57.5,}} onPress={dropdownhandler} />
-                    </View>
-            </View>
-        </View>
-        
-
-
-        <View style={styles.daysContainer}>
-            <View style={styles.days}>
-                
-            
-                <DayHigh content="Day 1"/>
-                <DayHigh content="Day 2"/>
-                <DayHigh content="Day 3"/>
-                
-            </View>
-        </View>
-
-        <View style={styles.TechO}>
-            <View style={styles.TechOFlex}>
-            <View style={{width: 320,height: 15,}}/>
-                <View style={styles.techOHead}>
-                    <View style={styles.Contentheading}>
-                            <Text style={styles.techOHeadText}>Techolympics</Text>
-                            <Image style={styles.info} source={require('../../assets/info.png')}/>
-                    </View>
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Mechanema</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>10:00am-11:30pm</Text>
-                        </View>
-                        
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Codescape</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>9:00am-12:00pm</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Crytophobia</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>2:00pm-3:00pm</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Emulate</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>4:00pm-5:00pm</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-
-            </View>
-        </View>
-        <View style={styles.TechE}>
-            <View style={styles.TechOFlex}>
-            <View style={{width: 320,height: 15,}}/>
-                <View style={styles.techOHead}>
-                    <View style={styles.Contentheading}>
-                            <Text style={styles.techOHeadText}>TechExpo</Text>
-                            <Image style={styles.info} source={require('../../assets/info.png')}/>
-                    </View>
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Inaugaration Ceremony</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>9:30am-10:30am</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>Expo</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>10:30am-5:00pm</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-            </View>
-        </View>
-
-        <View style={styles.Corp}>
-            <View style={styles.TechOFlex}>
-            <View style={{width: 320,height: 15,}}/>
-                <View style={styles.techOHead}>
-                    <View style={styles.Contentheading}>
-                            <Text style={styles.techOHeadText}>Corporate</Text>
-                            <Image style={styles.info} source={require('../../assets/info.png')}/>
-                    </View>
-                </View>
-
-                <View style={styles.techOHead}>
-                    <View style={styles.techtextflex}>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.techOText}>B-Plan</Text>
-                        </View>
-                        <View style={styles.eventholder}>
-                            <Text style={styles.eventTime}>9:00am-12:00pm</Text>
-                        </View>
-                        <CheckBox/>
-                    </View>                                 
-                </View>
-
-            </View>
-        </View>
-    </View>
-)}
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-alignItems: 'center',
-},
-eventholder:{
-      width: 100, 
-      height: 34,
-      justifyContent: 'center',
-    },
-eventScheduleWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    width: 320,
-    borderRadius: 8,
-    marginTop:5,
-    borderWidth: 1,
-    borderColor: '#7F43E1',
-    justifyContent: 'space-between',
-},
-scheduleflexcontainer: {
-    width: 320,
-    height: 44,
-    borderRadius: 8,
-    marginTop:5,
-    },
-    Contentheading: {
+    serviceContainer: {
+        flexDirection: 'column',
         flex: 1,
-        flexDirection: 'row',
-        width: 320.51,
-        height: 42,
-        marginTop:5,
-        },
-eventScheduleText: {
-    fontFamily: 'SF Pro Display',
-    fontStyle: 'normal',
-    fontSize: 14,
-    lineHeight: 16.71,
-    paddingLeft: 9,
-    color:'#7F43E1',
-    width: 150,
-    height: 15,
-},
-daysContainer: {
-    width: 320.51,
-    height: 34,
-    borderRadius: 8,
-    marginTop:5,
+        backgroundColor: '#EFEFEF',
     },
+    innerServiceContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        margin: windowHeight * 0.025
+    },
+    serviceRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: windowWidth*0.025
+    },
+    activeText: {
+        fontFamily: 'Sofia Pro',
+        fontSize: 24,
+        fontWeight: '800',
+        fontStyle: 'normal',
+        color: '#000000'
+    },
+    filterText: {
+        fontSize: 18,
+        fontFamily: 'Sofia Pro',
+        fontWeight: '700',
+        fontStyle: 'normal',
+        color: '#000000'
+    },
+    carouselView:{
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#00B4D8',
+        borderRadius: 16,
+        width: windowWidth*0.8,
+        height: windowHeight*0.25,
+        padding: windowWidth*0.09,
+    },
+    innerCarouselView:{
+        flexDirection: 'row',
+        flex: 1,
+        // margin: windowWidth*0.025,
+        // justifyContent: 'space-evenly',
+        alignContent: 'center',
+        alignItems: 'center'
+    },
+    serviceCarousel: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cardText:{
+        // flex: 1,
+        fontFamily: 'Sofia Pro',
+        fontWeight: '700',
+        color: '#FFFFFF',
+        fontSize: 20,
+        lineHeight: 20
+    },
+    lastCarouselRow:{
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        width: '100%'
+    },
+    CarouselButton:{
+        backgroundColor: "#FFFFFF",
+        flexDirection: 'column',
+        justifyContent: 'center'
+    }
 
-DaybuttonHighText: {
-fontFamily: 'SF Pro Display',
-fontStyle: 'normal',
-fontSize: 14,
-lineHeight: 16.71,
-color: 'white',
-textAlign: 'center',
-},
-DaybuttonText: {
-    fontFamily: 'SF Pro Display',
-    fontStyle: 'normal',
-    fontSize: 14,
-    lineHeight: 16.71,
-    color: '#7F43E1',
-    textAlign: 'center',
-    },
-TechO: {
-width: 320,
-height: 195,
-borderRadius: 8,
-marginTop:10,
-},
-TechOFlex: {
-    flex: 1, 
-        width:320,
-        marginTop:5,
-        justifyContent: 'space-between',},
-days: {
-    flex: 1, 
-        flexDirection: 'row',
-        width:320,
-        marginTop:5,
-        justifyContent: 'space-between',},
-eventholder:{
-    width: 100, 
-    height: 34,
-    justifyContent: 'center',
-},
-techOHead:{
-    width: 320, 
-    height: 34,
-    borderRadius: 8, 
-},
-techOHeadText:{
-    height: 24,
-    borderRadius: 8, 
-    fontSize:16,
-    color:'#FFFFFF',
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight:'bold',
-},
-techOText:{
-    width: 100, 
-    height: 18,
-    borderRadius: 8, 
-    fontSize:14,
-    color:'#FFFFFF',
-    fontFamily: 'SF Pro Display',
-    fontStyle: 'normal',
-},
-eventName:{
-    width: 200, 
-    height: 18,
-    fontSize:14,
-    color:'#FFFFFF',
-    fontFamily: 'SF Pro Display',
-    fontStyle: 'normal',
-    paddingRight:46,
-    left:193,
-},
-eventTime:{
-    width: 200, 
-    height: 18,
-    fontSize:14,
-    color:'#FFFFFF',
-    fontFamily: 'SF Pro Display',
-    fontStyle: 'normal',
-    paddingRight:20,
-    textAlign: 'right',
-},
-techtextflex: {
-    flex: 1, 
-        flexDirection: 'row',
-        width:320,
-        marginTop:5,
-},
-TechE: {
-width: 320,
-height: 120,
-borderRadius: 8,
-marginTop:10,
-},
-Corp: {
-    width: 320,
-    height: 65,
-    borderRadius: 8,
-    marginTop:10,
-    },
-    plus: {
-        width: 14, 
-        height: 14,
-        marginLeft: 95,
-        marginTop: 1,
-    
-        },
-    dropdown: {
-        
-        marginLeft: 72,
-        marginTop: 1,
-        },
-    info: {
-        width: 18,
-        height: 18,
-        marginTop: 1,
-        marginLeft: 11.5,
-            },
-        bgblack: {
-            width: 99, 
-            height: 32.5,
-            backgroundColor: 'black',
-            justifyContent: 'center',
-            borderRadius: 8,
-        
-            },
 });
 
 export default Schedule;

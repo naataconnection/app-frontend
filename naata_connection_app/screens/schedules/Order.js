@@ -12,140 +12,317 @@ const Order = () => {
                 <View style={styles.innerOrderContainer}>
                     <View style={styles.orderHeader}>
                         <Text style={styles.heading}>
-                            Service Request : xxx
+                            Order : xxx
                         </Text>
                     </View>
                     <View style={styles.carouselView}>
                         <View style={styles.groupHeader}>
                             <Text style={styles.groupHeaderText}>
-                                Group 1
+                                General Information
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 4 }]}>
                                 Driver
                             </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Loreum Ipsum
+                            <Text style={[styles.cardText, { flex: 6 }]}>
+                                Loreum
                             </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
+                            <Text style={[styles.cardText, { flex: 5 }]}>
                                 NC000103
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Delivery Boy
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Delivery Sheet Id
                             </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
                                 Loreum Ipsum
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
-                                NC000103
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Vehicle
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Starting KM
                             </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
                                 Loreum Ipsum
                             </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Ending KM
+                            </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
-                                NC000103
+                            <Text style={[styles.cardText, { flex: 10 }]}>
+                                Loreum Ipsum
                             </Text>
                         </View>
-                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02}]}>
-                            <View style={styles.viewOrder}>
-                                <Text style={styles.orderText}>
-                                    View Order
-                                </Text>
-                            </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Total Parcels
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1 }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Total Weight
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1 }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Dispatched
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1 }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8 }]}>
+                                Delivered
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1 }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10 }]}>
+                                Loreum Ipsum
+                            </Text>
                         </View>
                     </View>
-                    <View style={[styles.carouselView, {backgroundColor: "#F3752B"}]}>
+
+                    
+                </View>
+
+                <View style={styles.innerOrderContainer}>
+                    <View style={styles.orderHeader}>
+                        <Text style={styles.heading}>
+                            Invoices
+                        </Text>
+                    </View>
+                    <ScrollView horizontal={true}>
+                    <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]}>
                         <View style={styles.groupHeader}>
-                            <Text style={styles.groupHeaderText}>
-                                Add Group
+                            <Text style={[styles.groupHeaderText, {color: '#F3752B'}]}>
+                                Invoice 1
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 3 }]}>
-                                Driver
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Invoice Code
                             </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E'}]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E'}]}>
+                                XXX
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Delivery Sheet Id
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                 Loreum Ipsum
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 3 }]}>
-                                Delivery Boy
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Starting KM
                             </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                 Loreum Ipsum
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 3 }]}>
-                                Vehicle
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Ending KM
                             </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                 :
                             </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                 Loreum Ipsum
                             </Text>
                         </View>
-                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02 }]}>
-                            <View style={styles.viewOrder}>
-                                <Text style={[styles.orderText, {color: "#F3752B"}]}>
-                                    Add +
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.lastCarouselView}>
-                        <View style={styles.lastGroupHeader}>
-                            <Text style={styles.groupHeaderText}>
-                                Status : Delivered
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Total Parcels
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
                             </Text>
                         </View>
-                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02 }]}>
-                            <View style={[styles.viewOrder, {width: windowWidth*0.3,}]}>
-                                <Text style={[styles.orderText, {color: "#F3752B"}]}>
-                                    Close Request
-                                </Text>
-                            </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Total Weight
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
                         </View>
-                    </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Dispatched
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Delivered
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                    </View>   
+                    <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]}>
+                        <View style={styles.groupHeader}>
+                            <Text style={[styles.groupHeaderText, {color: '#F3752B'}]}>
+                                Invoice 1
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Invoice Code
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E'}]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E'}]}>
+                                XXX
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Delivery Sheet Id
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Starting KM
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Ending KM
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Total Parcels
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Total Weight
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Dispatched
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                        <View style={styles.innerCarouselView}>
+                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                Delivered
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                :
+                            </Text>
+                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                Loreum Ipsum
+                            </Text>
+                        </View>
+                    </View> 
+                    </ScrollView>        
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     orderContainer: {
@@ -209,9 +386,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#00B4D8',
         borderRadius: 16,
         width: windowWidth * 0.90,
-        height: windowHeight * 0.25,
+        height: windowHeight * 0.4,
         padding: windowWidth * 0.05,
-        marginBottom: windowHeight*0.08
+        marginRight: windowWidth*0.04,
+        marginBottom: windowHeight*0.04,
     },
     lastCarouselView:{
         flexDirection: 'column',
@@ -224,6 +402,7 @@ const styles = StyleSheet.create({
     },
     innerCarouselView: {
         flexDirection: 'row',
+        flex: 1
         // margin: windowWidth*0.025,
         // justifyContent: 'space-evenly',
     },

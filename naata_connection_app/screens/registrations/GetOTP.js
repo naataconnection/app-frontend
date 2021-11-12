@@ -1,5 +1,7 @@
+import axios from "axios";
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 import OrangeButton from '../../components/OrangeButton';
 import { orange, blue, red, green } from '../../constants/Color';
@@ -9,11 +11,40 @@ import { IconButton } from 'react-native-paper';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Login = ({navigation}) => {
+const Login = ({route, navigation}) => {
 
-const [hidePassword, setHidePassword] = useState(true)
-const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
+const [emailIdOrContact, setEmailIdOrContact] = useState('');
+const [input1, setInput1] = useState('');
+const [input2, setInput2] = useState('');
+const [input3, setInput3] = useState('');
+const [input4, setInput4] = useState('');
+const [input5, setInput5] = useState('');
+const [input6, setInput6] = useState('');
+
+
+useEffect(()=>{
+    // console.log(route);
+    setEmailIdOrContact(route.params.emailIdOrContact);
+    // console.log(emailIdOrContact)
+});
+
+const verifyOTPFunction = async (event)=>{
+    const otp = input1+input2+input3+input4+input5+input6;
+    try{
+        const response = await axios.post(`${API_ENDPOINT}/user/login_verfyOtp`,{
+            emailIdOrContact,
+            password: otp
+        })
+        console.log(response)
+        if(response.status=200){
+            navigation.navigate('Tabs')
+        }
+    }
+    catch(err){
+
+    }
+}
+
 
 const hidePasswordHandler = () => {
 
@@ -33,9 +64,9 @@ const hidePasswordHandler = () => {
                 <View style={styles.inputWrapper1}>
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput1(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />
@@ -43,9 +74,9 @@ const hidePasswordHandler = () => {
 
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput2(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />
@@ -53,9 +84,9 @@ const hidePasswordHandler = () => {
 
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput3(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />
@@ -63,9 +94,9 @@ const hidePasswordHandler = () => {
 
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput4(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />
@@ -73,9 +104,9 @@ const hidePasswordHandler = () => {
 
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput5(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />
@@ -83,9 +114,9 @@ const hidePasswordHandler = () => {
 
                     <View style={styles.otpWrapper}>
                         <TextInput
-                            placeholder='1'
+                            placeholder='0'
                             placeholderTextColor='#00B4D8'
-                            onChangeText={text => setEmail(text)}
+                            onChangeText={text => setInput6(text)}
                             clearTextOnFocus={true}
                             style={styles.input}
                         />

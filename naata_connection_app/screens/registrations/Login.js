@@ -1,3 +1,5 @@
+import axios from "axios";
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
@@ -11,14 +13,23 @@ const windowHeight = Dimensions.get('window').height;
 
 const Login = ({ navigation }) => {
 
-    const [hidePassword, setHidePassword] = useState(true)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const loginFunction = async (event)=>{
+        try{
+            const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {
+                emailIdOrContact
+            })
+            // console.log(`Response from login API: ${response._respon}`);
 
-    const hidePasswordHandler = () => {
-
-        setHidePassword(!hidePassword)
+            if(response.status==200){
+                navigation.navigate('GetOTP',{emailIdOrContact});
+            }
+        }
+        catch(error){
+            console.log(`Error from login api = ${error}`);
+        }
     }
+
+    const [emailIdOrContact, setEmailOrContact] = useState('');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -35,14 +46,16 @@ const Login = ({ navigation }) => {
                     <TextInput
                         placeholder='E-Mail or Phone Number'
                         placeholderTextColor='#FFFFFF'
-                        onChangeText={text => setEmail(text)}
+                        onChangeText={(text) => {
+                            setEmailOrContact(text);
+                        }}
                         clearTextOnFocus={true}
                         style={styles.input}
                     />
                 </View>
                 <View style={styles.inputWrapper2}>
                     <Text style={styles.nextLogin}>Next</Text>
-                    <TouchableHighlight onPress={()=> navigation.navigate('GetOTP')}>
+                    <TouchableHighlight onPress={loginFunction}>
                         <Image source={require('../../assets/naata_images/nextButton.png')} style={styles.nextButton}></Image>
                     </TouchableHighlight>
                 </View>

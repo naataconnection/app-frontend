@@ -1,5 +1,3 @@
-
-  
 import EVENTS from "../../data/Dummy";
 import {SET_EVENTS } from '../Action';
 

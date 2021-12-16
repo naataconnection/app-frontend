@@ -55,7 +55,7 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={styles.inputWrapper2}>
                     <Text style={styles.nextLogin}>Next</Text>
-                    <TouchableHighlight onPress={loginFunction}>
+                    <TouchableHighlight onPress={navigation.navigate('GetOTP',{emailIdOrContact})}>
                         <Image source={require('../../assets/naata_images/nextButton.png')} style={styles.nextButton}></Image>
                     </TouchableHighlight>
                 </View>

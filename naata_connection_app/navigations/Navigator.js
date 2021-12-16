@@ -19,6 +19,7 @@ import Header from "../components/Header";
 import FAQ from '../screens/drawer/FAQs';
 import ServiceRequest from "../screens/schedules/ServiceRequest";
 import Order from "../screens/schedules/Order";
+import Profile from '../screens/user/Profile';
 
 
 const Events = ({navigation}) => {
@@ -139,7 +140,7 @@ const TabScreen = () =>{
       >
         <Tab.Screen name="Home" component={homeTab} />
         <Tab.Screen name="Schedule" component={scheduleTab} />
-        <Tab.Screen name="Map" component={ServiceRequest} />
+        <Tab.Screen name="Map" component={Profile} />
         {/* <Tab.Screen name="Podcast" component={podcastTab} /> */}
     </Tab.Navigator>
   );
@@ -157,6 +158,7 @@ class AppNavigator extends React.Component  {
                 <Drawer.Screen name="Directory" component={directoryTab} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="Tabs" component={TabScreen} />
                 <Drawer.Screen name="Order" component={Order}/>
+                <Drawer.Screen name="ServiceRequest" component={ServiceRequest}/>
                 <Drawer.Screen name="Team" component={Team} options={{header:Header, headerShown:true}} />
                 <Drawer.Screen name="Events" component={Events} options={{header:Header, headerShown:true}} />
                 <Drawer.Screen name="EventList" component={EventList} options={{header:Header, headerShown:true}} />

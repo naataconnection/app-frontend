@@ -134,60 +134,144 @@ const Schedule = ({ navigation }) => {
                             Fitler
                         </Text>
                     </View>
-                    
+                    <ScrollView horizontal={true}>
                         <View style={styles.serviceCarousel}>
-                            <Carousel
-                            layout={"default"}
-                            // ref={ref => this.carousel = ref}
-                            data={carouselItems}
-                            sliderWidth={windowWidth}
-                            itemWidth={windowWidth*0.7}
-                            renderItem={_renderItem}
-                            onSnapToItem = { index => setActiveIndex(index) } 
-                            />
+                            <View style={styles.carouselView}>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Customer
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Super User
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Status
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Start Date
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.lastCarouselRow}>
+                                <TouchableHighlight onPress={()=>navigation.navigate('ServiceRequest')}>
+                                    <View style={styles.CarouselButton}>
+                                        <Text>
+                                            View Request
+                                        </Text>
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
+                            </View>                            
                         </View>
-                </View>
-                <View style={styles.innerServiceContainer}>
-                    <View style={styles.serviceRow}>
-                        <Text style={styles.activeText}>
-                            Active
-                        </Text>
-                        <Text style={styles.filterText}>
-                            Fitler
-                        </Text>
-                    </View>
-                    <View style={styles.serviceCarousel}>
-                        <Carousel
-                        layout={"default"}
-                        // ref={ref => this.carousel = ref}
-                        data={carouselItems}
-                        sliderWidth={windowWidth}
-                        itemWidth={windowWidth*0.7}
-                        renderItem={_renderItem}
-                        onSnapToItem = { index => setActiveIndex(index) } 
-                        />
-                    </View>
-                </View>
-                <View style={styles.innerServiceContainer}>
-                    <View style={styles.serviceRow}>
-                        <Text style={styles.activeText}>
-                            Active
-                        </Text>
-                        <Text style={styles.filterText}>
-                            Fitler
-                        </Text>
-                    </View>
-                    <View style={styles.serviceCarousel}>
-                        <Carousel
-                        layout={"default"}
-                        // ref={ref => this.carousel = ref}
-                        data={carouselItems}
-                        sliderWidth={windowWidth}
-                        itemWidth={windowWidth*0.7}
-                        renderItem={_renderItem}
-                        onSnapToItem = { index => setActiveIndex(index) } 
-                        />
-                    </View>
+                        <View style={styles.serviceCarousel}>
+                            <View style={styles.carouselView}>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.innerCarouselView}>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    Service Code
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 1}]}>
+                                    :
+                                </Text>
+                                <Text style={[styles.cardText, {flex: 3}]}>
+                                    XXX
+                                </Text>
+                            </View>
+                            <View style={styles.lastCarouselRow}>
+                                <TouchableHighlight onPress={()=>navigation.navigate('ServiceRequest')}>
+                                    <View style={styles.CarouselButton}>
+                                        <Text>
+                                            View Request
+                                        </Text>
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
+                            </View>                            
+                        </View>
+                        </ScrollView>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -233,7 +317,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         width: windowWidth*0.8,
         height: windowHeight*0.25,
-        padding: windowWidth*0.09,
+        padding: windowWidth*0.08,
     },
     innerCarouselView:{
         flexDirection: 'row',
@@ -246,6 +330,7 @@ const styles = StyleSheet.create({
     serviceCarousel: {
         alignItems: 'center',
         justifyContent: 'center',
+        padding: windowWidth*0.02
     },
     cardText:{
         // flex: 1,

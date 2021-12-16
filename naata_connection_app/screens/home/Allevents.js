@@ -18,26 +18,10 @@ import { tsNonNullExpression } from '@babel/types';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const RectangleMoreCard = (props) => {
-  return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
-      <View style={styles.rectmorecard}>
-        <Text style={styles.rectmorecardtext}>+10 More</Text>
-      </View>
-    </TouchableWithoutFeedback>
-
-  );
-}
-
-const SquareMoreCard = () => {
-  return (
-    <View style={styles.squamorecard}>
-      <Text style={styles.squamorecardtext}>+10 More</Text>
-    </View>
-  );
-}
-
 const AllEvents = (props) => {
+  // console.log("from all events");
+  // console.log(props);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ flexDirection: 'column' }}>

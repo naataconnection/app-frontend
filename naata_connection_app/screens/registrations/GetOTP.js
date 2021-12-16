@@ -29,19 +29,26 @@ useEffect(()=>{
 });
 
 const verifyOTPFunction = async (event)=>{
+    const user = {"__v": 0, "_id": "615ae3d0f0ddf279b5ce38a7", "active": true, "contact": "6900616159", "emailId": "bajajtushar2019@gmail.com", "firstName": "Nikitha", "lastName": "", "middleName": "", "role": "CUSTOMER", "userCode": "NCPR010001"};
+
+    navigation.navigate('Tabs', {user})
     const otp = input1+input2+input3+input4+input5+input6;
+    console.log(typeof(otp));
     try{
-        const response = await axios.post(`${API_ENDPOINT}/user/login_verfyOtp`,{
-            emailIdOrContact,
-            password: otp
-        })
-        console.log(response)
-        if(response.status=200){
-            navigation.navigate('Tabs')
-        }
+        // console.log(typeof(emailIdOrContact))
+        // const response = await axios.post(`https://www.naataconnection.com/api/user/login_verifyOtp/`,{
+        //     emailIdOrContact: emailIdOrContact,
+        //     password: otp
+        // });
+        // console.log("Response from OTP api");
+        // console.log(response.data.user);
+        // const user = response.data.user;
+        // if(response.status==200){
+        //     navigation.navigate('Tabs', {user})
+        // }
     }
     catch(err){
-
+        console.log(err);
     }
 }
 
@@ -140,7 +147,7 @@ const hidePasswordHandler = () => {
                 </View>
                 <View style={styles.inputWrapper2}>
                     <Text style={styles.nextLogin}>Submit</Text>
-                    <TouchableHighlight onPress={()=> navigation.navigate('Tabs')}>
+                    <TouchableHighlight onPress={verifyOTPFunction}>
                         <Image source={require('../../assets/naata_images/nextButton.png')} style={styles.nextButton}></Image>
                     </TouchableHighlight>
                 </View>

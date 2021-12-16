@@ -22,46 +22,6 @@ import Order from "../screens/schedules/Order";
 import Profile from '../screens/user/Profile';
 
 
-const Events = ({navigation}) => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Welcome to Home Screen</Text>
-      <Button
-        title="Go to Home again"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
-const Podcast = () =>  {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Welcome to Techniche Podcast</Text>
-      </View>
-    );
-  }
-
-const Team = ({navigation}) => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Welcome to Techniche Team</Text>  
-      <Button
-        title="Go to Home again"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
-
-const Map = ({navigation}) => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Welcome to Techniche Map</Text>  
-    </View>
-  );
-}
-
-
 const eventStack = createStackNavigator();
 const scheduleStack = createStackNavigator();
 // const mapStack = createStackNavigator();
@@ -70,17 +30,14 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const directoryStack = createStackNavigator();
 
-
-const homeTab = ({navigation,route}) => {
-    return (
-        <eventStack.Navigator screenOptions={{header:Header, headerNotification:true}}>
-            <eventStack.Screen name="Home" component={Allevents}/>
-            <eventStack.Screen name="EventList" component={EventList}/>
-            <eventStack.Screen name="IndividualEvent" component={IndividualEvent}/>
-        </eventStack.Navigator>
+// const HomeTab = ({navigation,route}) => {
+//     return (
+//         <eventStack.Navigator screenOptions={{header:Header, headerNotification:true}}>
+//             <eventStack.Screen name="Home" component={Allevents}/>
+//         </eventStack.Navigator>
        
-    );
-}
+//     );
+// }
 const directoryTab =({navigation,route}) => {
         return (
                 <directoryStack.Navigator screenOptions={{header:Header}}>
@@ -88,10 +45,15 @@ const directoryTab =({navigation,route}) => {
                 </directoryStack.Navigator>
             );
 }
-function scheduleTab({navigation,route}) {
+function ScheduleTab({navigation,route, user}) {
+    console.log("Scehdule Tab");
+    console.log(user);
     return (
         <scheduleStack.Navigator screenOptions={{header:Header}}>
-            <scheduleStack.Screen name="Schedule" component={Schedule} />
+            <scheduleStack.Screen name="Schedule">
+              {props => <Schedule {...props} user={user} />}
+            </scheduleStack.Screen>
+            <scheduleStack.Screen name="ServiceRequest" component={ServiceRequest}/>
         </scheduleStack.Navigator>
        
     );
@@ -116,9 +78,12 @@ function podcastTab() {
 }
 
 
-const TabScreen = () =>{
+const TabScreen = ({route, navigation}) =>{
+  console.log("User from tab screen");
+  console.log(route.params.user);
+  const user = route.params.user
   return (
-
+    
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -126,10 +91,10 @@ const TabScreen = () =>{
           if(route.name == 'Home'){
             icon = focused? require('../assets/icons/home_active.png') : require('../assets/icons/home.png');
           }
-          else if(route.name == 'Schedule'){
+          else if(route.name == 'ServiceRequest'){
             icon = focused? require('../assets/icons/schedule_active.png') : require('../assets/icons/schedule.png');
           }
-          else if(route.name == 'Map'){
+          else if(route.name == 'Profile'){
             icon = focused? require('../assets/icons/map_active.png') : require('../assets/icons/map.png');
           }
 
@@ -138,9 +103,13 @@ const TabScreen = () =>{
       })}
       tabBarOptions={{showLabel: false}}
       >
-        <Tab.Screen name="Home" component={homeTab} />
-        <Tab.Screen name="Schedule" component={scheduleTab} />
-        <Tab.Screen name="Map" component={Profile} />
+        <Tab.Screen name="Home">
+          {props => <Allevents {...props} user={user} />}
+        </Tab.Screen>
+        <Tab.Screen name="ServiceRequest">
+        {props => <ScheduleTab {...props} user={user} />}
+        </Tab.Screen>  
+        <Tab.Screen name="Profile" component={Profile} />
         {/* <Tab.Screen name="Podcast" component={podcastTab} /> */}
     </Tab.Navigator>
   );
@@ -155,15 +124,8 @@ class AppNavigator extends React.Component  {
               <Drawer.Navigator initialRouteName="Login" drawerContent={props=><DrawerContent {...props} />} >
                 <Drawer.Screen name="Login" component={Login} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="GetOTP" component={GetOTP} options={{header:Header, headerShown:false}} />
-                <Drawer.Screen name="Directory" component={directoryTab} options={{header:Header, headerShown:false}} />
                 <Drawer.Screen name="Tabs" component={TabScreen} />
                 <Drawer.Screen name="Order" component={Order}/>
-                <Drawer.Screen name="ServiceRequest" component={ServiceRequest}/>
-                <Drawer.Screen name="Team" component={Team} options={{header:Header, headerShown:true}} />
-                <Drawer.Screen name="Events" component={Events} options={{header:Header, headerShown:true}} />
-                <Drawer.Screen name="EventList" component={EventList} options={{header:Header, headerShown:true}} />
-                <Drawer.Screen name="IndividualEvent" component={IndividualEvent} options={{header:Header, headerShown:true}} />
-                <Drawer.Screen name="Faqs" component={FAQ} options={{header: Header, headerShown: true}}/>
               </Drawer.Navigator>
             </NavigationContainer>
         );

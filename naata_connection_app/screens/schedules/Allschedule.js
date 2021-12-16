@@ -1,126 +1,39 @@
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const _renderItem =  ({ item}, navigation) => {
-    return (
-        <View style={styles.carouselView}>
-          <View style={styles.innerCarouselView}>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                Service Code
-            </Text>
-            <Text style={[styles.cardText, {flex: 1}]}>
-                :
-            </Text>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                {item.serviceCode}
-            </Text>
-          </View>
-          <View style={styles.innerCarouselView}>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                Service Code
-            </Text>
-            <Text style={[styles.cardText, {flex: 1}]}>
-                :
-            </Text>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                {item.serviceCode}
-            </Text>
-          </View>
-          <View style={styles.innerCarouselView}>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                Service Code
-            </Text>
-            <Text style={[styles.cardText, {flex: 1}]}>
-                :
-            </Text>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                {item.serviceCode}
-            </Text>
-          </View>
-          <View style={styles.innerCarouselView}>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                Service Code
-            </Text>
-            <Text style={[styles.cardText, {flex: 1}]}>
-                :
-            </Text>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                {item.serviceCode}
-            </Text>
-          </View>
-          <View style={styles.innerCarouselView}>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                Service Code
-            </Text>
-            <Text style={[styles.cardText, {flex: 1}]}>
-                :
-            </Text>
-            <Text style={[styles.cardText, {flex: 3}]}>
-                {item.serviceCode}
-            </Text>
-          </View>
-          <View style={styles.lastCarouselRow}>
-              <TouchableHighlight onPress={item.mapping_func}>
-                <View style={styles.CarouselButton}>
-                    <Text>
-                        View Request
-                    </Text>
-                </View>
-              </TouchableHighlight>
-          </View>
-        </View>
-      )
-  }
     
-const Schedule = ({ navigation }) => {
+const Schedule = (props) => {
+    const user = props.user;
+    console.log(`User from all schedule`, props.user);
 
-    const [activeIndex, setActiveIndex] = useState(4);
+    // useEffect(()=>{
+        
 
-    const carouselItems = [
-        {
-            serviceCode:"serviceCode1",
-            customer: "customer1",
-            superUser:"superUser1",
-            status:'Active',
-            startDate:'2020-01-01',
-            mapping_func : () => {
-                navigation.navigate('GetOTP')
+    // });
+
+    useEffect(() => {
+        const getActiveServiceRequest = async () => {
+            try{
+                // console.log("UserCode", user.userCode);
+                const response = await axios.get(`http://192.168.1.41/api/serviceRequest/activeUsers`, {
+                    userCode: user.userCode
+                });
+                console.log('Active Service Requests');
+                console.log(response);
             }
-        },
-        {
-            serviceCode:"serviceCode2",
-            customer: "customer2",
-            superUser:"superUser2",
-            status:'Active',
-            startDate:'2020-01-01'
-        },
-        {
-            serviceCode:"serviceCode3",
-            customer: "customer3",
-            superUser:"superUser3",
-            status:'Active',
-            startDate:'2020-01-01'
-        },
-        {
-            serviceCode:"serviceCode4",
-            customer: "customer4",
-            superUser:"superUser4",
-            status:'Active',
-            startDate:'2020-01-01'
-        },
-        {
-            serviceCode:"serviceCode5",
-            customer: "customer5",
-            superUser:"superUser5",
-            status:'Active',
-            startDate:'2020-01-01'
-        },
-    ];
+            catch(err){
+                console.log(err);
+            }
+        }
+    
+        getActiveServiceRequest();
+      }, [])    
 
     return (
         <SafeAreaView style={styles.serviceContainer}>
@@ -193,7 +106,7 @@ const Schedule = ({ navigation }) => {
                                 </Text>
                             </View>
                             <View style={styles.lastCarouselRow}>
-                                <TouchableHighlight onPress={()=>navigation.navigate('ServiceRequest')}>
+                                <TouchableHighlight onPress={()=>props.navigation.navigate('ServiceRequest')}>
                                     <View style={styles.CarouselButton}>
                                         <Text>
                                             View Request
@@ -261,7 +174,7 @@ const Schedule = ({ navigation }) => {
                                 </Text>
                             </View>
                             <View style={styles.lastCarouselRow}>
-                                <TouchableHighlight onPress={()=>navigation.navigate('ServiceRequest')}>
+                                <TouchableHighlight onPress={()=>props.navigation.navigate('ServiceRequest')}>
                                     <View style={styles.CarouselButton}>
                                         <Text>
                                             View Request

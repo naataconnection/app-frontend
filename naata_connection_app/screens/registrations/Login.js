@@ -14,19 +14,21 @@ const windowHeight = Dimensions.get('window').height;
 const Login = ({ navigation }) => {
 
     const loginFunction = async (event)=>{
-        try{
-            const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {
-                emailIdOrContact
-            })
-            // console.log(`Response from login API: ${response._respon}`);
+        navigation.navigate('GetOTP',{emailIdOrContact:'bajajtushar2019@gmail.com'});
 
-            if(response.status==200){
-                navigation.navigate('GetOTP',{emailIdOrContact});
-            }
-        }
-        catch(error){
-            console.log(`Error from login api = ${error}`);
-        }
+        // try{
+        //     const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {
+        //         emailIdOrContact
+        //     })
+        //     // console.log(`Response from login API: ${response._respon}`);
+
+        //     if(response.status==200){
+        //         navigation.navigate('GetOTP',{emailIdOrContact});
+        //     }
+        // }
+        // catch(error){
+        //     console.log(`Error from login api = ${error}`);
+        // }
     }
 
     const [emailIdOrContact, setEmailOrContact] = useState('');
@@ -55,7 +57,7 @@ const Login = ({ navigation }) => {
                 </View>
                 <View style={styles.inputWrapper2}>
                     <Text style={styles.nextLogin}>Next</Text>
-                    <TouchableHighlight onPress={navigation.navigate('GetOTP',{emailIdOrContact})}>
+                    <TouchableHighlight onPress={loginFunction}>
                         <Image source={require('../../assets/naata_images/nextButton.png')} style={styles.nextButton}></Image>
                     </TouchableHighlight>
                 </View>

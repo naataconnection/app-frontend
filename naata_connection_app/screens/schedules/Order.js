@@ -1,20 +1,48 @@
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
-
+import axios from 'axios';
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Order = () => {
+const Order = (props) => {
+    // console.log("Order details");
+    // console.log(props.route.params.orderCodeObject);
+    const orderCode = props.route.params.orderCodeObject.orderCode;
+    const [orderDetails, setOrderDetails] = useState(null);
+
+    useEffect(() => {
+        const getOrderDetails = async () => {
+            try{
+                console.log("OrderCode", orderCode);
+                const response =  await axios.post(`https://www.naataconnection.com/api/serviceRequest/orders`, {
+                    orderCode
+                });
+                setOrderDetails(response.data.message[0]);
+                console.log('Order Details', orderDetails);
+                // console.log(response.message);
+                // console.log(orderDetails);
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+    
+        getOrderDetails();
+      }, []) ;
+
     return (
         <SafeAreaView style={styles.orderContainer}>
             <ScrollView style={styles.scrollOrderContainer}>
                 <View style={styles.innerOrderContainer}>
                     <View style={styles.orderHeader}>
                         <Text style={styles.heading}>
-                            Order : xxx
+                            Order : {orderCode}
                         </Text>
                     </View>
+                    {orderDetails!=null && 
                     <View style={styles.carouselView}>
                         <View style={styles.groupHeader}>
                             <Text style={styles.groupHeaderText}>
@@ -35,7 +63,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 5 }]}>
-                                NC000103
+                                {orderDetails.driver!=null && orderDetails.driver.userCode}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -46,7 +74,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.deliverySheetId}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -57,7 +85,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.startingKM !=null ? orderDetails.startingKM : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -68,7 +96,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.endingKM !=null ? orderDetails.endingKM : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -79,7 +107,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.totalParcels !=null ? orderDetails.totalParcels : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -90,7 +118,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.totalWeight !=null ? orderDetails.totalWeight : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -101,7 +129,7 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.dispatch?'Yes':'No'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -112,10 +140,11 @@ const Order = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {orderDetails.deliver?'Yes':'No'}
                             </Text>
                         </View>
-                    </View>
+                    </View>}
+                    
 
                     
                 </View>

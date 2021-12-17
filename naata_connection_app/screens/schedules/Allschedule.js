@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import axios from 'axios';
@@ -11,6 +12,10 @@ const windowHeight = Dimensions.get('window').height;
 const Schedule = (props) => {
     const user = props.user;
     console.log(`User from all schedule`, props.user);
+    
+    const [activeServiceRequests, setActiveServiceRequests] = useState(null);
+    const [pendingServiceRequests, setPendingServiceRequests] = useState(null);
+    const [completedServiceRequests, setCompletedServiceRequests] = useState(null);
 
     // useEffect(()=>{
         
@@ -21,11 +26,58 @@ const Schedule = (props) => {
         const getActiveServiceRequest = async () => {
             try{
                 // console.log("UserCode", user.userCode);
-                const response = await axios.get(`http://192.168.1.41/api/serviceRequest/activeUsers`, {
+                const response = await axios.get(`${API_ENDPOINT}/serviceRequest/activeUsers`, {
                     userCode: user.userCode
                 });
-                console.log('Active Service Requests');
-                console.log(response);
+                
+                if(response.status==200)
+                {
+                    setActiveServiceRequests(response.data.message);
+                    console.log('Active Service Requests');
+                    console.log(activeServiceRequests);
+                }
+                else{
+                    console.log('Response from failed request:',response.data.message);
+                }
+
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+
+        const getPendingServiceRequest = async () => {
+            try{
+                const response = await axios.get(`${API_ENDPOINT}/serviceRequest/pendingUsers`,{
+                    userCode: user.userCode
+                });
+                
+                if(response.status==200){
+                    setPendingServiceRequests(response.data.message);
+                    console.log('Pending Service Requests', pendingServiceRequests);
+                }
+                else{
+                    console.log('Response from failed requests:', response.data.message);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+
+        const getCompletedServiceRequest = async () => {
+            try{
+                const response = await axios.get(`${API_ENDPOINT}/serviceRequest/completedUsers`,{
+                    userCode: user.userCode
+                });
+                
+                if(response.status==200){
+                    setCompletedServiceRequests(response.data.message);
+                    console.log('Completed Service Requests', completedServiceRequests);
+                }
+                else{
+                    console.log('Response from failed requests:', response.data.message);
+                }
             }
             catch(err){
                 console.log(err);
@@ -33,6 +85,8 @@ const Schedule = (props) => {
         }
     
         getActiveServiceRequest();
+        getPendingServiceRequest();
+        getCompletedServiceRequest();
       }, [])    
 
     return (
@@ -48,142 +102,79 @@ const Schedule = (props) => {
                         </Text>
                     </View>
                     <ScrollView horizontal={true}>
-                        <View style={styles.serviceCarousel}>
-                            <View style={styles.carouselView}>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Customer
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Super User
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Status
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Start Date
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.lastCarouselRow}>
-                                <TouchableHighlight onPress={()=>props.navigation.navigate('ServiceRequest')}>
-                                    <View style={styles.CarouselButton}>
-                                        <Text>
-                                            View Request
+                        {activeServiceRequests!=null && activeServiceRequests.map((data, key)=>{
+                            console.log("Data from card", data);
+                            return (
+                                <View style={styles.serviceCarousel} key={key}>
+                                    <View style={styles.carouselView}>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Service Code
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 1}]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            {data.requestCode}
                                         </Text>
                                     </View>
-                                </TouchableHighlight>
-                            </View>
-                            </View>                            
-                        </View>
-                        <View style={styles.serviceCarousel}>
-                            <View style={styles.carouselView}>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.innerCarouselView}>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    Service Code
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 1}]}>
-                                    :
-                                </Text>
-                                <Text style={[styles.cardText, {flex: 3}]}>
-                                    XXX
-                                </Text>
-                            </View>
-                            <View style={styles.lastCarouselRow}>
-                                <TouchableHighlight onPress={()=>props.navigation.navigate('ServiceRequest')}>
-                                    <View style={styles.CarouselButton}>
-                                        <Text>
-                                            View Request
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Customer
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 1}]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            {data.customer.userCode}
                                         </Text>
                                     </View>
-                                </TouchableHighlight>
-                            </View>
-                            </View>                            
-                        </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Super User
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 1}]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            {data.superUser.userCode}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Status
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 1}]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Active
+                                        </Text>
+                                    </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            Start Date
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 1}]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, {flex: 3}]}>
+                                            XXX
+                                        </Text>
+                                    </View>
+                                    <View style={styles.lastCarouselRow}>
+                                        <TouchableHighlight onPress={()=>props.navigation.navigate('ServiceRequest', {serviceRequestData: data})}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text>
+                                                    View Request
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                                    </View>                            
+                                </View>
+                            )
+                        })}
                         </ScrollView>
                 </View>
             </ScrollView>

@@ -20,6 +20,7 @@ import FAQ from '../screens/drawer/FAQs';
 import ServiceRequest from "../screens/schedules/ServiceRequest";
 import Order from "../screens/schedules/Order";
 import Profile from '../screens/user/Profile';
+import DieselEntry from '../screens/home/dieselEntryForm';
 
 
 const eventStack = createStackNavigator();
@@ -30,14 +31,20 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const directoryStack = createStackNavigator();
 
-// const HomeTab = ({navigation,route}) => {
-//     return (
-//         <eventStack.Navigator screenOptions={{header:Header, headerNotification:true}}>
-//             <eventStack.Screen name="Home" component={Allevents}/>
-//         </eventStack.Navigator>
+const HomeTab = ({navigation,route, user}) => {
+    // console.log("User from home tab", props.user);
+    return (
+        <eventStack.Navigator screenOptions={{header:Header, headerNotification:true}}>
+            <scheduleStack.Screen name="Home">
+              {props => <Allevents {...props} user={user} />}
+            </scheduleStack.Screen>
+            <scheduleStack.Screen name="DieselEntry">
+              {props => <DieselEntry {...props} user={user}/>}
+            </scheduleStack.Screen>
+        </eventStack.Navigator>
        
-//     );
-// }
+    );
+}
 const directoryTab =({navigation,route}) => {
         return (
                 <directoryStack.Navigator screenOptions={{header:Header}}>
@@ -104,7 +111,7 @@ const TabScreen = ({route, navigation}) =>{
       tabBarOptions={{showLabel: false}}
       >
         <Tab.Screen name="Home">
-          {props => <Allevents {...props} user={user} />}
+          {props => <HomeTab {...props} user={user} />}
         </Tab.Screen>
         <Tab.Screen name="ServiceRequest">
         {props => <ScheduleTab {...props} user={user} />}

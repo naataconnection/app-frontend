@@ -1,26 +1,58 @@
-import { Assets } from '@react-navigation/stack';
 import { Button, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 import { ImageBackground, StyleSheet, Text, SafeAreaView, ScrollView, StatusBar, View, Image, TouchableHighlight, ActivityIndicator, TouchableWithoutFeedback, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { IconButton, Colors } from 'react-native-paper';
 import RectangleCard from '../../components/RectangleCard';
-import SquareCard from '../../components/SquareCard';
-import SearchBox from '../../components/SearchBox.js';
-import { useSelector, connect } from 'react-redux';
-import { setEvents } from '../../store/Action';
-import { event } from 'react-native-reanimated';
-import { orange, blue, red, green } from "../../constants/Color";
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { tsNonNullExpression } from '@babel/types';
+import axios from 'axios';
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const AllEvents = (props) => {
-  // console.log("from all events");
-  // console.log(props);
+  console.log("from all events");
+  console.log(props);
+  // console.log('UserCode from all events:', props.user.userCode);
+  const user = props.user;
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = dd + '-' + mm + '-' + yyyy;
+  // console.log('Date today', today);
+  const startDayApi = async ()=>{
+
+    try{
+      const response = await axios.patch(`${API_ENDPOINT}/attendance/markPresent`, {
+        userCode: user.userCode
+      })
+  
+      if(response.status==200){
+        console.log("Day started");
+        console.log(response);
+      }
+    }
+    catch(err){
+      console.log('Error from start day api:', err);
+    }
+
+  };
+
+  const endDayApi = async ()=>{
+    try{
+      const response = await axios.patch(`${API_ENDPOINT}/attendance/endtheDay`, {
+        userCode: user.userCode
+      });
+
+      if(response.status==200){
+        console.log("Day started");
+        console.log(response);
+      }      
+    }
+    catch(err){
+      console.log('Error from end day:', err);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,18 +96,18 @@ const AllEvents = (props) => {
           <Text style={styles.attendanceText}>Attendance</Text>
           <View style={styles.innerAttendanceView}>
             <Text style={styles.attendanceDate}>
-              10-10-2021
+              {today}
             </Text>
             <View style={styles.day}>
               <View style={styles.startDay}>
-                <TouchableHighlight>
+                <TouchableHighlight onPress={startDayApi}>
                   <Text style={styles.startDayText}>
                     Start Day
                   </Text>
                 </TouchableHighlight>
               </View>
               <View style={styles.endDay}>
-                <TouchableHighlight>
+                <TouchableHighlight onPress={endDayApi}>
                   <Text style={styles.endDayText}>
                     End Day
                   </Text>
@@ -96,7 +128,7 @@ const AllEvents = (props) => {
                 <Text style={styles.newFormText}>
                   Fill new form
                 </Text>
-                <TouchableHighlight>
+                <TouchableHighlight onPress={()=>props.navigation.navigate('DieselEntry')}>
                   <Image source={require('../../assets/naata_images/nextButtonBlue.png')} style={styles.nextButton}></Image>
                 </TouchableHighlight>
               </View>

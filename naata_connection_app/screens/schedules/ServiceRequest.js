@@ -5,7 +5,13 @@ import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const ServiceRequest = ({navigation}) => {
+const ServiceRequest = (props) => {
+    // console.log('service request data');
+    // console.log(props.route.params);
+    const serviceRequestData = props.route.params.serviceRequestData;
+    const drivers = serviceRequestData.drivers;
+    const deliveryBoys = serviceRequestData.deliveryBoys;
+    const vehicles = serviceRequestData.vehicles;
     return (
         <SafeAreaView style={styles.orderContainer}>
             <ScrollView style={styles.scrollOrderContainer}>
@@ -15,73 +21,81 @@ const ServiceRequest = ({navigation}) => {
                             Service Request : xxx
                         </Text>
                     </View>
-                    <View style={styles.carouselView}>
-                        <View style={styles.groupHeader}>
-                            <Text style={styles.groupHeaderText}>
-                                Group 1
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Driver
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Loreum Ipsum
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
-                                NC000103
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Delivery Boy
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Loreum Ipsum
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
-                                NC000103
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Vehicle
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 5 }]}>
-                                Loreum Ipsum
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1 }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 4 }]}>
-                                NC000103
-                            </Text>
-                        </View>
-                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02}]}>
-                            <TouchableHighlight onPress={()=> navigation.navigate('Order')}>
-                                <View style={styles.viewOrder}>
-                                    <Text style={styles.orderText}>
-                                        View Order
-                                    </Text>
+                    {
+                        drivers.map((data, key)=>{
+                            const orderCodeObject = serviceRequestData.orders[key];
+                            return (
+                                <View style={styles.carouselView}>
+                                    <View style={styles.groupHeader}>
+                                        <Text style={styles.groupHeaderText}>
+                                            Group {key+1}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            Driver
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 3 }]}>
+                                            Loreum 
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            {data.userCode}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            Delivery Boy
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 3 }]}>
+                                            Loreum 
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            {deliveryBoys[key].userCode}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.innerCarouselView}>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            Vehicle
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 3 }]}>
+                                            Loreum 
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 1 }]}>
+                                            :
+                                        </Text>
+                                        <Text style={[styles.cardText, { flex: 5 }]}>
+                                            {vehicles[key].vehicleCode}
+                                        </Text>
+                                    </View>
+                                    <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02}]}>
+                                        <TouchableHighlight onPress={()=> props.navigation.navigate('Order', {orderCodeObject})}>
+                                            <View style={styles.viewOrder}>
+                                                <Text style={styles.orderText}>
+                                                    View Order
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
                                 </View>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
+                            )
+                        })
+                    }
+                    
                     <View style={[styles.carouselView, {backgroundColor: "#F3752B"}]}>
                         <View style={styles.groupHeader}>
                             <Text style={styles.groupHeaderText}>
@@ -210,9 +224,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#00B4D8',
         borderRadius: 16,
-        width: windowWidth * 0.90,
+        width: windowWidth * 0.92,
         height: windowHeight * 0.25,
-        padding: windowWidth * 0.05,
+        padding: windowWidth * 0.03,
         marginBottom: windowHeight*0.08
     },
     lastCarouselView:{
@@ -228,6 +242,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // margin: windowWidth*0.025,
         // justifyContent: 'space-evenly',
+        marginBottom: windowHeight*0.005
     },
     cardText: {
         // flex: 1,

@@ -27,6 +27,7 @@ const eventStack = createStackNavigator();
 const scheduleStack = createStackNavigator();
 // const mapStack = createStackNavigator();
 const podcastStack = createStackNavigator();
+const profileStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const directoryStack = createStackNavigator();
@@ -45,6 +46,18 @@ const HomeTab = ({navigation,route, user}) => {
        
     );
 }
+
+const ProfileTab = ({user}) => {
+  return (
+    <profileStack.Navigator screenOptions={{header:Header, headerNotification:true}}>
+      <profileStack.Screen name="Profile"> 
+        {props =>  <Profile {...props} user={user}/>}
+      </profileStack.Screen>
+      
+    </profileStack.Navigator>
+  );
+}
+
 const directoryTab =({navigation,route}) => {
         return (
                 <directoryStack.Navigator screenOptions={{header:Header}}>
@@ -116,7 +129,9 @@ const TabScreen = ({route, navigation}) =>{
         <Tab.Screen name="ServiceRequest">
         {props => <ScheduleTab {...props} user={user} />}
         </Tab.Screen>  
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Profile">
+        {props => <ProfileTab {...props} user={user} />}
+        </Tab.Screen>  
         {/* <Tab.Screen name="Podcast" component={podcastTab} /> */}
     </Tab.Navigator>
   );

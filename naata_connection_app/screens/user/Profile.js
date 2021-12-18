@@ -1,11 +1,40 @@
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
-
+import axios from 'axios';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Profile = () => {
+const Profile = (props) => {
+    console.log("User from profile screen:", props.user);
+    const user = props.user;
+    const [additionalInfo, setAdditionalInfo] = useState(null);
+
+    useEffect(() => {
+        const getAdditionalInfo= async () => {
+            try{
+                // console.log("UserCode", user.userCode);
+                const response = await axios.post(`${API_ENDPOINT}/users/customer`, {
+                    userCode: user.userCode
+                });
+                
+                if(response.status==200)
+                {
+                    console.log('Response from additional info', response.data);
+                }
+                else{
+                    console.log('Response from failed request:',response.data.message);
+                }
+
+            }
+            catch(err){
+                console.log(err);
+            }
+        }    
+        getAdditionalInfo();
+      }, []);   
+
     return (
         <SafeAreaView style={styles.orderContainer}>
             <ScrollView style={styles.scrollOrderContainer}>
@@ -24,7 +53,7 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.firstName?user.firstName:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -35,7 +64,7 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                            {user.lastName?user.lastName:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -46,7 +75,7 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.emailId?user.emailId:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -57,18 +86,18 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.contact?user.contact:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
                             <Text style={[styles.cardText, { flex: 8 }]}>
-                                Code
+                                User Code
                             </Text>
                             <Text style={[styles.cardText, { flex: 1 }]}>
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.userCode?user.userCode:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -79,7 +108,7 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.role?user.role:'-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -90,7 +119,7 @@ const Profile = () => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                Loreum Ipsum
+                                {user.active?'YES':'NO'}    
                             </Text>
                         </View>
                     </View>

@@ -87,7 +87,7 @@ const Schedule = (props) => {
         getActiveServiceRequest();
         getPendingServiceRequest();
         getCompletedServiceRequest();
-      }, [])    
+      }, []);    
 
     return (
         <SafeAreaView style={styles.serviceContainer}>

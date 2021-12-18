@@ -5985,6 +5985,13 @@ react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-document-picker@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-7.1.2.tgz#99c11a166c65f0fc4184f14067b7ea7a088252ed"
+  integrity sha512-9lVkvv37H2axi69t7IWhDBEEqF/sLXoIS0v3ROCgpcVRY0dyo+XZO5nBGUZtoBnqxiYBEoXDfWtCBmCU8h0/1Q==
+  dependencies:
+    invariant "^2.2.4"
+
 react-native-fontawesome@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fontawesome/-/react-native-fontawesome-7.0.0.tgz#9050d50e03c5264c071292b885ab189f29accfad"

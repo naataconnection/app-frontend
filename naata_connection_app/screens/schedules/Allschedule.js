@@ -11,7 +11,7 @@ const windowHeight = Dimensions.get('window').height;
     
 const Schedule = (props) => {
     const user = props.user;
-    console.log(`User from all schedule`, props.user);
+    // console.log(`User from all schedule`, props.user);
     
     const [activeServiceRequests, setActiveServiceRequests] = useState(null);
     const [pendingServiceRequests, setPendingServiceRequests] = useState(null);
@@ -103,7 +103,7 @@ const Schedule = (props) => {
                     </View>
                     <ScrollView horizontal={true}>
                         {activeServiceRequests!=null && activeServiceRequests.map((data, key)=>{
-                            console.log("Data from card", data);
+                            // console.log("Data from card", data);
                             return (
                                 <View style={styles.serviceCarousel} key={key}>
                                     <View style={styles.carouselView}>

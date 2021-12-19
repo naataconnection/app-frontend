@@ -30,7 +30,9 @@ useEffect(()=>{
 
 const verifyOTPFunction = async (event)=>{
     const user = {"__v": 0, "_id": "615ae3d0f0ddf279b5ce38a7", "active": true, "contact": "6900616159", "emailId": "bajajtushar2019@gmail.com", "firstName": "Nikitha", "lastName": "", "middleName": "", "role": "CUSTOMER", "userCode": "NCPR010001"};
-
+    // const user = {"_id":"615ae5d7a14b6da71f0499e6","firstName":"Nikitha","middleName":"","lastName":"","emailId":"driver@gmail.com","contact":"6900612344","role":"DRIVER","active":true,"__v":{"$numberInt":"0"},"userCode":"NCTP020001"};
+    // const user = {"_id":{"$oid":"615ae676a14b6da71f0499ed"},"firstName":"DeliveryBoy1","middleName":"","lastName":"","emailId":"deliveryboy@gmail.com","contact":"6900613445","role":"DELIVERY BOY","active":true,"__v":{"$numberInt":"0"},"userCode":"NCTP030001"};
+    
     navigation.navigate('Tabs', {user})
     const otp = input1+input2+input3+input4+input5+input6;
     console.log(typeof(otp));

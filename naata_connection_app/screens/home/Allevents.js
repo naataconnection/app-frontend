@@ -134,7 +134,7 @@ const AllEvents = (props) => {
               </View>
             </View>
           </View>
-          <View style={[styles.dieselView, { backgroundColor: "#00B4D8" }]}>
+          {/* <View style={[styles.dieselView, { backgroundColor: "#00B4D8" }]}>
             <View style={styles.innerDieselView}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.dieselText}>
@@ -150,7 +150,7 @@ const AllEvents = (props) => {
                 </TouchableHighlight>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#CAF0F8",
     borderRadius: 24,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.4
+    height: windowHeight * 0.2
   },
   dieselView: {
     flex: 1,

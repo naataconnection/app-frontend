@@ -11,27 +11,63 @@ const Order = (props) => {
     // console.log("Order details");
     // console.log(props.route.params.orderCodeObject);
     const orderCode = props.route.params.orderCodeObject.orderCode;
-    const [orderDetails, setOrderDetails] = useState(null);
 
-    useEffect(() => {
-        const getOrderDetails = async () => {
-            try{
-                console.log("OrderCode", orderCode);
-                const response =  await axios.post(`https://www.naataconnection.com/api/serviceRequest/orders`, {
-                    orderCode
-                });
-                setOrderDetails(response.data.message[0]);
-                console.log('Order Details', orderDetails);
-                // console.log(response.message);
-                // console.log(orderDetails);
-            }
-            catch(err){
-                console.log(err);
-            }
-        }
-    
-        getOrderDetails();
-      }, []) ;
+    // var invoiceDetailsDummy = [];
+    const [orderDetails, setOrderDetails] = useState(null);
+    var invoiceCodes = []; 
+    const [invoiceDetails, setInvoiceDetails] = useState([]);
+
+    // const updateInvoiceDetails = (element)=>{
+    //     setInvoiceDetails(invoiceDetails=> [...invoiceDetails, element]);
+    // }
+
+      useEffect(() => {
+          const getOrderDetails = async () => {
+              try{
+                  // console.log("OrderCode", orderCode);
+                  const response =  await axios.post(`https://www.naataconnection.com/api/serviceRequest/orders`, {
+                      orderCode
+                  });
+                  // console.log(response);
+                  console.log('Order Details', response.data.message[0]);
+                  setOrderDetails(response.data.message[0]);
+                  if(orderDetails!=null){
+                      setInvoiceDetails([]);
+                      console.log('Invoice Details after clearning:', invoiceDetails);
+                      for(var i=0;i<orderDetails.invoices.length;i++){
+                        var invoiceCode = orderDetails.invoices[i].invoiceCode;
+
+                        try{
+                            const response = await axios.post(`${API_ENDPOINT}/serviceRequest/invoices`,{
+                                invoiceCode
+                            })
+            
+                            if(response.status==200){
+                                console.log('Response from invoice API:', response.data.message[0]);
+                                let newArr = [...invoiceDetails]; // copying the old datas array
+                                newArr.push(response.data.message[0]);
+                                setInvoiceDetails(newArr);
+                                console.log('Array of invoice details:',invoiceDetails)
+                            }
+                        }
+                        catch(err){
+                            console.log('Error from invoice details:', JSON.stringify(err).message);
+                        }
+                      }
+                  }
+              }
+              catch(err){
+                  console.log(err);
+              }
+          };
+          
+      
+          getOrderDetails();
+
+        //   if(invoiceDetailsDummy!=null){
+        //       setInvoiceDetails(invoiceDetailsDummy);
+        //   }
+        }, []) ;
 
     return (
         <SafeAreaView style={styles.orderContainer}>
@@ -152,200 +188,110 @@ const Order = (props) => {
                 <View style={styles.innerOrderContainer}>
                     <View style={styles.orderHeader}>
                         <Text style={styles.heading}>
-                            Invoices
+                            Invoices 
                         </Text>
                     </View>
                     <ScrollView horizontal={true}>
-                    <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]}>
-                        <View style={styles.groupHeader}>
-                            <Text style={[styles.groupHeaderText, {color: '#F3752B'}]}>
-                                Invoice 1
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Invoice Code
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E'}]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E'}]}>
-                                XXX
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Delivery Sheet Id
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Starting KM
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Ending KM
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Total Parcels
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Total Weight
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Dispatched
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Delivered
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                    </View>   
-                    <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]}>
-                        <View style={styles.groupHeader}>
-                            <Text style={[styles.groupHeaderText, {color: '#F3752B'}]}>
-                                Invoice 1
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Invoice Code
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E'}]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E'}]}>
-                                XXX
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Delivery Sheet Id
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Starting KM
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Ending KM
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Total Parcels
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Total Weight
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Dispatched
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Delivered
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                    </View> 
+                    {invoiceDetails!=null && invoiceDetails.map((data, key)=>{
+                        return (
+                            <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]} key={key}>
+                                <View style={styles.groupHeader}>
+                                    <Text style={[styles.groupHeaderText, {color: '#F3752B'}]}>
+                                        Invoice {key+1}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Invoice Code
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E'}]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E'}]}>
+                                        {data.invoiceCode !=null ? data.invoiceCode : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Invoice Id
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {data.invoiceId != null ? data.invoiceId : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Number of Parcels
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                    {data.numberParcels != null ? data.numberParcels : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Parcels Weight
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                    {data.parcelWeight != null ? data.parcelWeight : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Parcel Type
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {data.parcelType != null ? data.parcelType : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Delivery Address
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {data.deliveryAddress != null ? data.deliveryAddress : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Dispatched
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {data.dispatched ? 'YES' : 'NO'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Delivered
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {data.delivered ? 'YES' : 'NO'}
+                                        {/* {invoiceDetails!=null ? 'Done': 'Not done'} */}
+                                    </Text>
+                                </View>
+                            </View>   
+                        );
+                    })}                        
                     </ScrollView>        
                 </View>
             </ScrollView>

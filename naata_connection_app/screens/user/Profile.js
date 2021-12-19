@@ -12,28 +12,48 @@ const Profile = (props) => {
     const [additionalInfo, setAdditionalInfo] = useState(null);
 
     useEffect(() => {
-        const getAdditionalInfo= async () => {
-            try{
+        const getAdditionalInfo = async () => {
+            try {
                 // console.log("UserCode", user.userCode);
-                const response = await axios.post(`${API_ENDPOINT}/users/customer`, {
-                    userCode: user.userCode
-                });
-                
-                if(response.status==200)
-                {
-                    console.log('Response from additional info', response.data);
+                var response = null;
+
+                if (user.role == 'CUSTOMER') {
+                    response = await axios.post(`${API_ENDPOINT}/users/customer`, {
+                        userCode: user.userCode
+                    });
                 }
-                else{
-                    console.log('Response from failed request:',response.data.message);
+                else if (user.role == 'MANAGER') {
+                    response = await axios.post(`${API_ENDPOINT}/users/manager`, {
+                        userCode: user.userCode
+                    });
+                }
+                else if (user.role == 'DRIVER') {
+                    response = await axios.post(`${API_ENDPOINT}/users/driver`, {
+                        userCode: user.userCode
+                    })
+                }
+                else if (user.role == 'DELIVERY BOY') {
+                    response = await axios.post(`${API_ENDPOINT}/users/deliveryBoy`, {
+                        userCode: user.userCode
+                    })
+                }
+
+
+                if (response != null && response.status == 200) {
+                    console.log('Response from additional info', response.data.data);
+                    setAdditionalInfo(response.data.data);
+                }
+                else {
+                    console.log('Response from failed request:', response.data);
                 }
 
             }
-            catch(err){
+            catch (err) {
                 console.log(err);
             }
-        }    
+        }
         getAdditionalInfo();
-      }, []);   
+    }, []);
 
     return (
         <SafeAreaView style={styles.orderContainer}>
@@ -53,7 +73,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.firstName?user.firstName:'-'}
+                                {user.firstName ? user.firstName : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -64,7 +84,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                            {user.lastName?user.lastName:'-'}
+                                {user.lastName ? user.lastName : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -75,7 +95,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.emailId?user.emailId:'-'}
+                                {user.emailId ? user.emailId : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -86,7 +106,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.contact?user.contact:'-'}
+                                {user.contact ? user.contact : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -97,7 +117,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.userCode?user.userCode:'-'}
+                                {user.userCode ? user.userCode : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -108,7 +128,7 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.role?user.role:'-'}
+                                {user.role ? user.role : '-'}
                             </Text>
                         </View>
                         <View style={styles.innerCarouselView}>
@@ -119,67 +139,268 @@ const Profile = (props) => {
                                 :
                             </Text>
                             <Text style={[styles.cardText, { flex: 10 }]}>
-                                {user.active?'YES':'NO'}    
+                                {user.active ? 'YES' : 'NO'}
                             </Text>
                         </View>
                     </View>
 
-                    
-                </View>
 
-                <View style={styles.innerOrderContainer}>
-                    <View style={styles.orderHeader}>
-                        <Text style={styles.heading}>
-                            Manager
-                        </Text>
-                    </View>
-                    <View style={[styles.carouselView, {backgroundColor: '#E3E3E1'}]}>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Emergency Contact
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Blood Group
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Date of Joining
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                        <View style={styles.innerCarouselView}>
-                            <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                Photo ID
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                :
-                            </Text>
-                            <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                Loreum Ipsum
-                            </Text>
-                        </View>
-                    </View>    
                 </View>
+                {user.role == 'CUSTOMER' &&
+                    <View style={styles.innerOrderContainer}>
+                        <View style={styles.orderHeader}>
+                            <Text style={styles.heading}>
+                                {user.role}
+                            </Text>
+                        </View>
+                        {additionalInfo != null &&
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Address
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.address ? additionalInfo.address : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        City
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.city ? additionalInfo.city : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        State
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.state ? additionalInfo.state : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Department
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.department ? additionalInfo.department : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        GST
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.gst ? additionalInfo.gst : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Contact
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                    </Text>
+                                </View>
+                            </View>}
+                    </View>}
+
+                    {user.role == 'DRIVER' &&
+                    <View style={styles.innerOrderContainer}>
+                        <View style={styles.orderHeader}>
+                            <Text style={styles.heading}>
+                                {user.role}
+                            </Text>
+                        </View>
+                        {additionalInfo != null &&
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Address
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.address ? additionalInfo.address : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        City
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.city ? additionalInfo.city : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        State
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.state ? additionalInfo.state : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Contact
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Date of Joining
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.dateOfJoining ? additionalInfo.dateOfJoining : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Date of Termination
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
+                                    </Text>
+                                </View>                                
+                            </View>}
+                    </View>}
+
+                    {user.role == 'DELIVERY BOY' &&
+                    <View style={[styles.innerOrderContainer]}>
+                        <View style={styles.orderHeader}>
+                            <Text style={styles.heading}>
+                                {user.role}
+                            </Text>
+                        </View>
+                        {additionalInfo != null &&
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1', height: windowHeight*0.5 }]}>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Age
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.age ? additionalInfo.age : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Blood Group
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.bloodGroup ? additionalInfo.bloodGroup : '-'}
+                                    </Text>
+                                </View>                                
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Address
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.address ? additionalInfo.address : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        City
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.city ? additionalInfo.city : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        State
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.state ? additionalInfo.state : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Secondary Contact
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Date of Joining
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.dateOfJoining ? additionalInfo.dateOfJoining : '-'}
+                                    </Text>
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Date of Termination
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                        {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
+                                    </Text>
+                                </View>  
+                            </View>}
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     );
@@ -247,19 +468,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#00B4D8',
         borderRadius: 16,
         width: windowWidth * 0.90,
-        height: windowHeight * 0.4,
+        height: windowHeight * 0.35,
         padding: windowWidth * 0.05,
-        marginRight: windowWidth*0.04,
-        marginBottom: windowHeight*0.04,
+        marginRight: windowWidth * 0.04,
+        marginBottom: windowHeight * 0.04,
     },
-    lastCarouselView:{
+    lastCarouselView: {
         flexDirection: 'column',
         backgroundColor: '#52B788',
         borderRadius: 16,
         width: windowWidth * 0.90,
         height: windowHeight * 0.15,
         padding: windowWidth * 0.05,
-        marginBottom: windowHeight*0.08
+        marginBottom: windowHeight * 0.08
     },
     innerCarouselView: {
         flexDirection: 'row',
@@ -278,11 +499,11 @@ const styles = StyleSheet.create({
     groupHeader: {
         flexDirection: 'row',
         alignContent: 'flex-start',
-        marginBottom: windowHeight*0.02
+        marginBottom: windowHeight * 0.02
     },
-    lastGroupHeader:{
+    lastGroupHeader: {
         flexDirection: 'row',
-        alignContent: 'flex-start',        
+        alignContent: 'flex-start',
     },
     groupHeaderText: {
         fontSize: 26,

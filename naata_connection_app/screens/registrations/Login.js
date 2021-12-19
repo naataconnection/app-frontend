@@ -14,7 +14,7 @@ const windowHeight = Dimensions.get('window').height;
 const Login = ({ navigation }) => {
 
     const loginFunction = async (event)=>{
-        navigation.navigate('GetOTP',{emailIdOrContact:'bajajtushar2019@gmail.com'});
+        navigation.navigate('GetOTP',{emailIdOrContact:'driver@gmail.com'});
 
         // try{
         //     const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {

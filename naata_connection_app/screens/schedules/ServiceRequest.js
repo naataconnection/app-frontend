@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
@@ -12,6 +12,7 @@ const ServiceRequest = (props) => {
     const drivers = serviceRequestData.drivers;
     const deliveryBoys = serviceRequestData.deliveryBoys;
     const vehicles = serviceRequestData.vehicles;
+
     return (
         <SafeAreaView style={styles.orderContainer}>
             <ScrollView style={styles.scrollOrderContainer}>

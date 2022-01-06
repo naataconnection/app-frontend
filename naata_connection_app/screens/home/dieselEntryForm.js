@@ -76,7 +76,7 @@ const DieselEntry = (props) => {
           // Setting the state to show single file attributes
           setBillImage(res);
           console.log(res['0']);
-          file = res;
+        //   file = res;
         } catch (err) {
           setBillImage(null);
           // Handling any exception (If any)
@@ -103,28 +103,32 @@ const DieselEntry = (props) => {
             vehicleNumber,
             paymentMode,
             remarks,
-            userCode: user.userCode            
+            userCode: user.userCode      
         }
+        var photo = { uri: kmImage.uri, type: 'image/jpg', name: kmImage.name };
+        data.append('images', [kmImage, kmImage]);
+        // data.append('files', billImage);
+        // data.append('body', body);
 
-        data.append('files', kmImage);
-        data.append('files', billImage);
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
 
-        // Object.keys(body).forEach(key => {
-        //     data.append(key, body[key]);
-        // });
-
-        // console.log('formData', typeof(data._parts['0']));
+        console.log('formData', JSON.stringify(data));
 
         try{
-            const response = await axios.post(`${API_ENDPOINT}/diesel/create`,data,
-            {'Content-Type':'application/x-www-form-urlencoded'});
-
-            if(response.status==200){
-                console.log("Form Submitted");
-            }
+            const response = await fetch(`${API_ENDPOINT}/diesel/create`,{
+                method:'POST',
+                body: body,
+                headers: new Headers({'content-type': 'multipart/form-data'}),
+            });
+            console.log('Response from entry form:', response)
+            // if(response.status==200){
+            //     console.log("Form Submitted");
+            // }
         }
         catch(err){
-            console.log('Response from Diesel Entry Form:', JSON.stringify(err));
+            console.log('error from Diesel Entry Form:', JSON.stringify(err));
         }
         
 

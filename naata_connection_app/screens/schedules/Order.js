@@ -11,15 +11,57 @@ const Order = (props) => {
     // console.log("Order details");
     // console.log(props.route.params.orderCodeObject);
     const orderCode = props.route.params.orderCodeObject.orderCode;
-
+    const requestCode = props.route.params.requestCode;
+    const user = props.user;
     // var invoiceDetailsDummy = [];
     const [orderDetails, setOrderDetails] = useState(null);
     var invoiceCodes = []; 
     const [invoiceDetails, setInvoiceDetails] = useState([]);
 
+    const dispatchOrder = async()=>{
+
+        try{
+            const response = await axios.post(`${API_ENDPOINT}/api/serviceRequest/dispatch/driver`, {
+                driverCode: user.userCode,
+                orderCode,
+                requestCode
+            });
+
+            if(response.status==200){
+                alert(`Order ${orderCode} is dispatched`);
+            }
+        }
+        catch(err){
+            console.log('Error from dispatch request:', JSON.stringify(err));
+            alert(`Error ${err.message} has occured`);
+        }
+    };
+
+    const deliverOrder = async()=>{
+
+        try{
+            const response = await axios.post(`${API_ENDPOINT}/api/serviceRequest/deliver/driver`, {
+                driverCode: user.userCode,
+                orderCode,
+                requestCode
+            });
+
+            if(response.status==200){
+                alert(`Order ${orderCode} is dispatched`);
+            }
+        }
+        catch(err){
+            
+            alert(`Error ${err.message} has occured`);
+        }
+    };
+
+
     // const updateInvoiceDetails = (element)=>{
     //     setInvoiceDetails(invoiceDetails=> [...invoiceDetails, element]);
     // }
+
+
 
       useEffect(() => {
           const getOrderDetails = async () => {
@@ -63,10 +105,6 @@ const Order = (props) => {
           
       
           getOrderDetails();
-
-        //   if(invoiceDetailsDummy!=null){
-        //       setInvoiceDetails(invoiceDetailsDummy);
-        //   }
         }, []) ;
 
     return (
@@ -180,10 +218,43 @@ const Order = (props) => {
                             </Text>
                         </View>
                     </View>}
-                    
-
-                    
-                </View>
+                    {user.role=='DRIVER' && orderDetails!=null && orderDetails.dispatch==true &&
+                    <View style={styles.lastCarouselView}>
+                        <View style={styles.lastGroupHeader}>
+                            <Text style={styles.groupHeaderText}>
+                                Status : Dispatched
+                            </Text>
+                        </View>
+                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02 }]}>
+                            <View style={[styles.viewOrder, {width: windowWidth*0.3,}]}>
+                                <TouchableHighlight onPress={deliverOrder}>
+                                    <Text style={[styles.orderText, {color: "#F3752B"}]}>
+                                        Deliver Request
+                                    </Text>
+                                </TouchableHighlight>
+                            </View>
+                        </View>
+                    </View>
+                    }
+                    {user.role=='DRIVER' && orderDetails!=null && orderDetails.dispatch==false &&
+                    <View style={styles.lastCarouselView}>
+                        <View style={styles.lastGroupHeader}>
+                            <Text style={styles.groupHeaderText}>
+                                Status :Not Dispatched
+                            </Text>
+                        </View>
+                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02 }]}>
+                            <View style={[styles.viewOrder, {width: windowWidth*0.3,}]}>
+                                <TouchableHighlight onPress={dispatchOrder}>
+                                    <Text style={[styles.orderText, {color: "#F3752B"}]}>
+                                        Dispatch Request
+                                    </Text>
+                                </TouchableHighlight>
+                            </View>
+                        </View>
+                    </View>
+                    }                       
+                </View>             
 
                 <View style={styles.innerOrderContainer}>
                     <View style={styles.orderHeader}>

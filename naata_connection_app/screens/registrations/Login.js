@@ -1,17 +1,28 @@
 import axios from "axios";
 import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 import OrangeButton from '../../components/OrangeButton';
 import { orange, blue, red, green } from '../../constants/Color';
 import { font1, font2, font3, font4, font5 } from '../../constants/Fonts';
 import { IconButton } from 'react-native-paper';
+import {NetworkInfo} from 'react-native-network-info';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Login = ({ navigation }) => {
+
+    useEffect(() => {
+        // Get Local IP
+        NetworkInfo.getIPAddress().then(ipAddress => {
+            console.log('ipAddress',ipAddress);
+        });
+        NetworkInfo.getIPV4Address().then(ipv4Address => {
+            console.log('ipv4Address',ipv4Address);
+        });
+    }, []);
 
     const loginFunction = async (event)=>{
         navigation.navigate('GetOTP',{emailIdOrContact:'driver@gmail.com'});

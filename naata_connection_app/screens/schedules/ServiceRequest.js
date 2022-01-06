@@ -1,6 +1,8 @@
 import { Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
+import axios from 'axios';
+import { API_ENDPOINT, SERVER_HOSTNAME } from '../../config';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -8,10 +10,16 @@ const windowHeight = Dimensions.get('window').height;
 const ServiceRequest = (props) => {
     // console.log('service request data');
     // console.log(props.route.params);
+    const user = props.user;
+    // console.log('User from service request:', user);
     const serviceRequestData = props.route.params.serviceRequestData;
+    console.log('service request data:', serviceRequestData);
     const drivers = serviceRequestData.drivers;
     const deliveryBoys = serviceRequestData.deliveryBoys;
     const vehicles = serviceRequestData.vehicles;
+
+    const requestCode = serviceRequestData.requestCode;
+
 
     return (
         <SafeAreaView style={styles.orderContainer}>
@@ -19,7 +27,7 @@ const ServiceRequest = (props) => {
                 <View style={styles.innerOrderContainer}>
                     <View style={styles.orderHeader}>
                         <Text style={styles.heading}>
-                            Service Request : xxx
+                            Service Request : {serviceRequestData.requestCode}
                         </Text>
                     </View>
                     {
@@ -84,7 +92,7 @@ const ServiceRequest = (props) => {
                                         </Text>
                                     </View>
                                     <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02}]}>
-                                        <TouchableHighlight onPress={()=> props.navigation.navigate('Order', {orderCodeObject})}>
+                                        <TouchableHighlight onPress={()=> props.navigation.navigate('Order', {orderCodeObject, requestCode})}>
                                             <View style={styles.viewOrder}>
                                                 <Text style={styles.orderText}>
                                                     View Order
@@ -97,7 +105,7 @@ const ServiceRequest = (props) => {
                         })
                     }
                     
-                    <View style={[styles.carouselView, {backgroundColor: "#F3752B"}]}>
+                    {/* <View style={[styles.carouselView, {backgroundColor: "#F3752B"}]}>
                         <View style={styles.groupHeader}>
                             <Text style={styles.groupHeaderText}>
                                 Add Group
@@ -143,21 +151,7 @@ const ServiceRequest = (props) => {
                                 </Text>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.lastCarouselView}>
-                        <View style={styles.lastGroupHeader}>
-                            <Text style={styles.groupHeaderText}>
-                                Status : Delivered
-                            </Text>
-                        </View>
-                        <View style={[styles.innerCarouselView, { justifyContent: 'flex-end', marginTop: windowHeight*0.02 }]}>
-                            <View style={[styles.viewOrder, {width: windowWidth*0.3,}]}>
-                                <Text style={[styles.orderText, {color: "#F3752B"}]}>
-                                    Close Request
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
+                    </View> */}
                 </View>
             </ScrollView>
         </SafeAreaView>

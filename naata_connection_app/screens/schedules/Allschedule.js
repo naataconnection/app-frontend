@@ -26,15 +26,17 @@ const Schedule = (props) => {
         const getActiveServiceRequest = async () => {
             try{
                 // console.log("UserCode", user.userCode);
-                const response = await axios.get(`${API_ENDPOINT}/serviceRequest/activeUsers`, {
+                const response = await axios.post(`${API_ENDPOINT}/serviceRequest/activeUsers`, {
                     userCode: user.userCode
                 });
+
+                console.log('Response from Active Requests:', response);
                 
                 if(response.status==200)
                 {
-                    setActiveServiceRequests(response.data.message);
+                    setActiveServiceRequests(response.data.data);
                     console.log('Active Service Requests');
-                    console.log(activeServiceRequests);
+                    console.log(JSON.stringify(response.data.data));
                 }
                 else{
                     console.log('Response from failed request:',response.data.message);
@@ -126,7 +128,7 @@ const Schedule = (props) => {
                                             :
                                         </Text>
                                         <Text style={[styles.cardText, {flex: 3}]}>
-                                            {data.customer.userCode}
+                                            {/* {data.customer.userCode?data.customer.userCode:'-'} */}
                                         </Text>
                                     </View>
                                     <View style={styles.innerCarouselView}>
@@ -137,7 +139,7 @@ const Schedule = (props) => {
                                             :
                                         </Text>
                                         <Text style={[styles.cardText, {flex: 3}]}>
-                                            {data.superUser.userCode}
+                                            {/* {data.superUser.userCode} */}
                                         </Text>
                                     </View>
                                     <View style={styles.innerCarouselView}>

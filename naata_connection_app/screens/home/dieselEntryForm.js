@@ -105,22 +105,29 @@ const DieselEntry = (props) => {
             remarks,
             userCode: user.userCode      
         }
-        var photo = { uri: kmImage.uri, type: 'image/jpg', name: kmImage.name };
-        data.append('images', [kmImage, kmImage]);
+
+        var uri = kmImage[0].uri.replace("content", "file");
+        var photo = { uri: uri, type: 'image/jpeg', name: kmImage[0].name };
+
+        // var images = [];
+        // images.push(kmImage);
+        // images.push(billImage);
+        data.append('file', { uri: kmImage[0].uri.replace("content", "file"), type: 'image/jpeg', name: kmImage[0].name });
         // data.append('files', billImage);
         // data.append('body', body);
 
-        Object.keys(body).forEach(key => {
-            data.append(key, body[key]);
-        });
+        // Object.keys(body).forEach(key => {
+        //     data.append(key, body[key]);
+        // });
 
         console.log('formData', JSON.stringify(data));
 
         try{
-            const response = await fetch(`${API_ENDPOINT}/diesel/create`,{
+            const response = await fetch(`${API_ENDPOINT}/diesel/testAPI`,{
                 method:'POST',
-                body: body,
-                headers: new Headers({'content-type': 'multipart/form-data'}),
+                body: data,
+                // headers: new Headers({'Content-type': 'multipart/form-data; boundary=------some-random-characters', 'Accept': 'application/json'}),
+                headers: new Headers({'Content-Type':'application/form-data'})
             });
             console.log('Response from entry form:', response)
             // if(response.status==200){

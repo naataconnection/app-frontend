@@ -58,10 +58,8 @@ const DieselEntry = (props) => {
       };
 
       const selectBillImage = async () => {
-        // Opening Document Picker to select one file
         try {
           const res = await DocumentPicker.pick({
-            // Provide which type of file you want user to pick
             type: [DocumentPicker.types.allFiles],
             // There can me more options as well
             // DocumentPicker.types.allFiles
@@ -70,21 +68,14 @@ const DieselEntry = (props) => {
             // DocumentPicker.types.audio
             // DocumentPicker.types.pdf
           });
-          // Printing the log realted to the file
           console.log('res : ' + JSON.stringify(res));
           alert('Successful');
-          // Setting the state to show single file attributes
           setBillImage(res);
-          console.log(res['0']);
-        //   file = res;
         } catch (err) {
           setBillImage(null);
-          // Handling any exception (If any)
           if (DocumentPicker.isCancel(err)) {
-            // If user canceled the document selection
             alert('Canceled');
           } else {
-            // For Unknown Error
             alert('Unknown Error: ' + JSON.stringify(err));
             throw err;
           }
@@ -92,47 +83,53 @@ const DieselEntry = (props) => {
       };
 
     const submitDieselEntry = async () =>{
-        // console.log('Entries');
-        // console.log(kmVehicle);
         const data = new FormData();
+        console.log("totalAmount:",typeof Number(totalAmount));
         const body = {
-            kmVehicle,
+            kmVehicle:Number(kmVehicle),
             pump,
-            litre,
-            totalAmount,
+            litre:Number(litre),
+            totalAmount:Number(totalAmount),
             vehicleNumber,
             paymentMode,
             remarks,
             userCode: user.userCode      
         }
+        var images = [];
+        images.push(kmImage[0]);
+        images.push(billImage[0]);
+        data.append('images', kmImage[0]);
+        data.append('images', billImage[0]);
+        console.log('images', images);
 
-        var uri = kmImage[0].uri.replace("content", "file");
-        var photo = { uri: uri, type: 'image/jpeg', name: kmImage[0].name };
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
 
-        // var images = [];
-        // images.push(kmImage);
-        // images.push(billImage);
-        data.append('file', { uri: kmImage[0].uri.replace("content", "file"), type: 'image/jpeg', name: kmImage[0].name });
-        // data.append('files', billImage);
-        // data.append('body', body);
-
-        // Object.keys(body).forEach(key => {
-        //     data.append(key, body[key]);
-        // });
-
-        console.log('formData', JSON.stringify(data));
+        // data.append("body", body);
 
         try{
-            const response = await fetch(`${API_ENDPOINT}/diesel/testAPI`,{
-                method:'POST',
-                body: data,
-                // headers: new Headers({'Content-type': 'multipart/form-data; boundary=------some-random-characters', 'Accept': 'application/json'}),
-                headers: new Headers({'Content-Type':'application/form-data'})
+            // const response = await fetch(`${API_ENDPOINT}/diesel/create`,{
+            //     method:'POST',
+            //     body: data,
+            //     headers: {
+            //         "Content-Type": "multipart/form-data",
+            //     }
+            // });
+            const response = await axios.post(`${API_ENDPOINT}/diesel/create`, data, {
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                }
             });
-            console.log('Response from entry form:', response)
-            // if(response.status==200){
-            //     console.log("Form Submitted");
-            // }
+            console.log('Response from entry form:', JSON.stringify(response));
+
+            if(response.status==200){
+                alert("Diesel Form Submitted");
+            }
+            else{
+                alert("Error occured");
+            }
+
         }
         catch(err){
             console.log('error from Diesel Entry Form:', JSON.stringify(err));

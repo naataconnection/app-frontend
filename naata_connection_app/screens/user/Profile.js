@@ -7,9 +7,44 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Profile = (props) => {
-    console.log("User from profile screen:", props.user);
     const user = props.user;
     const [additionalInfo, setAdditionalInfo] = useState(null);
+    const [updateInfo, setUpdateInfo] = useState(false);
+    const [companyName, setCompanyName] = useState(user.companyName ? user.companyName : "");
+    const [address, setAddress] = useState(user.address ? user.address : "");
+    const [city, setCity] = useState(user.city ? user.city : "");
+    const [state, setState] = useState(user.state ? user.state : "");
+    const [department, setDepartment] = useState(user.department ? user.department : "");
+    const [gst, setGst] = useState(user.gst ? user.gst : "");
+    const [secondarycontact, setSecondaryContact] = useState(user.secondaryContact ? user.secondaryContact : "");
+
+    const updateProfileAPI = async () => {
+        const body = {
+            companyName,
+            address,
+            city,
+            state,
+            department,
+            gst,
+            secondarycontact,
+            isProfileImage:0
+        }
+
+        const data = new FormData();
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        try {
+            const response = await axios.post(`${API_ENDPOINT}/user/registerCustomer`, body);
+
+            console.log("response from register API:", response);
+        }
+        catch(err){
+            console.log("Error:", err);
+        }
+    }
 
     useEffect(() => {
         const getAdditionalInfo = async () => {
@@ -157,14 +192,47 @@ const Profile = (props) => {
                             <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Company Name
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder={'Enter Company Name'}
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setCompanyName(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10, }]}
+                                        /> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.companyName ? additionalInfo.companyName : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Address
                                     </Text>
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.address ? additionalInfo.address : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Address'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setAddress(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10, }]}
+                                        /> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.address ? additionalInfo.address : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -173,9 +241,22 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.city ? additionalInfo.city : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setCity(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.city ? additionalInfo.city : '-'}
+                                        </Text>
+                                    }
+
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -184,9 +265,21 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.state ? additionalInfo.state : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter State'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setState(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.state ? additionalInfo.state : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -195,9 +288,22 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.department ? additionalInfo.department : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Department'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setDepartment(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.department ? additionalInfo.department : '-'}
+                                        </Text>
+                                    }
+
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -206,25 +312,74 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.gst ? additionalInfo.gst : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter GST'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setGst(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.gst ? additionalInfo.gst : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Contact
+                                        Secondary Contact
                                     </Text>
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setSecondaryContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.lastCarouselRow}>
+                                    {updateInfo ?
+                                        <TouchableHighlight onPress={() => {
+                                            setUpdateInfo(false);
+                                            updateProfileAPI();
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Save Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                        :
+                                        <TouchableHighlight onPress={() => {
+                                            setUpdateInfo(true);
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Update Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    }
+
                                 </View>
                             </View>}
                     </View>}
 
-                    {user.role == 'DRIVER' &&
+                {user.role == 'DRIVER' &&
                     <View style={styles.innerOrderContainer}>
                         <View style={styles.orderHeader}>
                             <Text style={styles.heading}>
@@ -298,11 +453,11 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                         {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
                                     </Text>
-                                </View>                                
+                                </View>
                             </View>}
                     </View>}
 
-                    {user.role == 'DELIVERY BOY' &&
+                {user.role == 'DELIVERY BOY' &&
                     <View style={[styles.innerOrderContainer]}>
                         <View style={styles.orderHeader}>
                             <Text style={styles.heading}>
@@ -310,7 +465,7 @@ const Profile = (props) => {
                             </Text>
                         </View>
                         {additionalInfo != null &&
-                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1', height: windowHeight*0.5 }]}>
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1', height: windowHeight * 0.5 }]}>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Age
@@ -332,7 +487,7 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                         {additionalInfo.bloodGroup ? additionalInfo.bloodGroup : '-'}
                                     </Text>
-                                </View>                                
+                                </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Address
@@ -398,7 +553,7 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
                                         {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
                                     </Text>
-                                </View>  
+                                </View>
                             </View>}
                     </View>}
             </ScrollView>
@@ -468,7 +623,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#00B4D8',
         borderRadius: 16,
         width: windowWidth * 0.90,
-        height: windowHeight * 0.35,
+        height: windowHeight * 0.4,
         padding: windowWidth * 0.05,
         marginRight: windowWidth * 0.04,
         marginBottom: windowHeight * 0.04,
@@ -484,9 +639,8 @@ const styles = StyleSheet.create({
     },
     innerCarouselView: {
         flexDirection: 'row',
-        flex: 1
-        // margin: windowWidth*0.025,
-        // justifyContent: 'space-evenly',
+        flex: 1,
+        alignContent: 'space-around'
     },
     cardText: {
         // flex: 1,
@@ -527,44 +681,40 @@ const styles = StyleSheet.create({
         fontFamily: 'Sofia Pro',
         fontWeight: '700',
         color: "#F3752B"
-    }
+    },
+    input: {
+        // flex: 1,
+        fontFamily: 'Sofia Pro',
+        color: '#00B4D8',
+        fontWeight: '700',
+        fontSize: 20,
+        // lineHeight: 20
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 0,
+        paddingLeft: 5,
+        marginBottom: windowHeight * 0.01
+    },
+    lastCarouselRow: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        width: '100%'
+    },
+    CarouselButton: {
+        backgroundColor: "#FFFFFF",
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: windowWidth * 0.01,
+        borderRadius: 12
+    },
+    requestButton: {
+        fontFamily: 'Sofia Pro',
+        fontWeight: '700',
+        fontSize: 18
 
+    }
 });
 
 export default Profile;
-
-// import * as React from 'react';
-// import { View, useWindowDimensions } from 'react-native';
-// import { TabView, SceneMap } from 'react-native-tab-view';
-
-// const FirstRoute = () => (
-//   <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-// );
-
-// const SecondRoute = () => (
-//   <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-// );
-
-// const renderScene = SceneMap({
-//   first: FirstRoute,
-//   second: SecondRoute,
-// });
-
-// export default function TabViewExample() {
-//   const layout = useWindowDimensions();
-
-//   const [index, setIndex] = React.useState(0);
-//   const [routes] = React.useState([
-//     { key: 'first', title: 'First' },
-//     { key: 'second', title: 'Second' },
-//   ]);
-
-//   return (
-//     <TabView
-//       navigationState={{ index, routes }}
-//       renderScene={renderScene}
-//       onIndexChange={setIndex}
-//       initialLayout={{ width: layout.width }}
-//     />
-//   );
-// }

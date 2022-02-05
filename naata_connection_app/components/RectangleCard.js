@@ -79,7 +79,7 @@ const RectangleCard = (props) => {
         <ImageBackground source={imageUrl} style={styles.cardimage} imageStyle={{ borderRadius: 32 }}>
           <View style={styles.cardcontainer}>
             <Image blurRadius={10} source={require('../assets/bg.png')} style={styles.cardcontainerimage} />
-            <Image source={require('../assets/naata_images/close.png')} style={styles.like} />
+            {/* <Image source={require('../assets/naata_images/close.png')} style={styles.like} /> */}
             <View style={styles.cardContent}>
               <Text style={styles.cardtitle}>{props.title}</Text>
               <Text style={styles.cardsubtitle}>{props.subtitle}</Text>

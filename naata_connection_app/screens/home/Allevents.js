@@ -9,17 +9,35 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const AllEvents = (props) => {
-  console.log("from all events");
-  console.log(props);
-  // console.log('UserCode from all events:', props.user.userCode);
   const user = props.user;
+  const [notifications, setNotifications] = useState([]);
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
 
   today = dd + '-' + mm + '-' + yyyy;
-  // console.log('Date today', today);
+
+  useEffect(() => {
+    const getNotifications = async () => {
+        try {
+          const response = await axios.post(`${API_ENDPOINT}/notification/getAll`, {});
+          if(response.status==200){
+            setNotifications(response.data.message);
+            console.log("Notifications:", notifications);
+          }
+          else{
+            console.log("Error loading Notifications");
+          }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    getNotifications();
+}, []);
+
+
   const startDayApi = async ()=>{
 
     try{
@@ -61,33 +79,18 @@ const AllEvents = (props) => {
           <ImageBackground source={require('../../assets/naata_images/backgroundNotifications.png')} resizeMode="cover" style={styles.notificationsBackground}>
             <Text style={styles.heading}>Notifications</Text>
             <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
-              <RectangleCard
-                key="1234"
+              {notifications.map((item)=>{
+                return (<RectangleCard
+                key={item._id}
                 tag="Reg. Open"
-                title="Demo"
-                subtitle="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                title={item.title}
+                subtitle={item.content}
                 date="2020-01-01"
                 imageUrl="../../assets/Techniche.png"
               // onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
-              />
-              <RectangleCard
-                key="12345"
-                tag="Reg. Open"
-                title="Demo"
-                subtitle="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                date="2020-01-01"
-                imageUrl="../../assets/Techniche.png"
-              // onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
-              />
-              <RectangleCard
-                key="12346"
-                tag="Reg. Open"
-                title="Demo"
-                subtitle="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                date="2020-01-01"
-                imageUrl="../../assets/Techniche.png"
-              // onPress={()=>{props.navigation.navigate('IndividualEvent',{e_id: event.e_id})}}
-              />
+              />);
+              })}
+              
             </ScrollView>
           </ImageBackground>
         </View>

@@ -12,10 +12,10 @@ const windowHeight = Dimensions.get('window').height;
 const DieselEntry = (props) => {
     const user = props.user;
     // console.log('User from diesel entry', user);
-    const [kmVehicle, setKMVehicle] = useState("");
+    const [kmVehicle, setKMVehicle] = useState(0);
     const [pump, setPump] = useState("");
     const [litre, setLitre] = useState(0);
-    const [totalAmount, setTotalAmount] = useState("");
+    const [totalAmount, setTotalAmount] = useState(0);
     const [vehicleNumber, setVehicleNumber] = useState("");
     const [paymentMode, setPaymentMode] = useState("");
     const [remarks, setRemarks] = useState("");
@@ -84,15 +84,16 @@ const DieselEntry = (props) => {
 
     const submitDieselEntry = async () =>{
         const data = new FormData();
-        console.log("totalAmount:",typeof Number(totalAmount));
+        console.log("totalAmount:",typeof kmVehicle);
         const body = {
-            kmVehicle:Number(kmVehicle),
+            kmVehicle:kmVehicle,
             pump,
             litre:Number(litre),
             totalAmount:Number(totalAmount),
             vehicleNumber,
             paymentMode,
             remarks,
+            dieselRate:100,
             userCode: user.userCode      
         }
         var images = [];
@@ -166,7 +167,9 @@ const DieselEntry = (props) => {
                                 placeholderTextColor='#00B4D8'
                                 
                                 onChangeText={(text) => {
-                                    setKMVehicle(text);
+                                    console.log("type of kmVehicle 1:", typeof Number(text));
+                                    setKMVehicle(Number(text));
+                                    console.log("type of kmVehicle 2:", typeof kmVehicle);
                                 }}
                                 clearTextOnFocus={true}
                                 style={[styles.input, {flex: 8}]}

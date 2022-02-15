@@ -30,24 +30,22 @@ useEffect(()=>{
 
 const verifyOTPFunction = async (event)=>{
     const user = {"_id":{"$oid":"61c2f8a3887c6b997e7136d6"},"firstName":"Customer1","lastName":"Dummy","emailId":"customer1@gmail.com","contact":"6900616159","role":"CUSTOMER","active":true,"__v":{"$numberInt":"0"},"userCode":"NCPR010001"};
-    // const user = {"_id":"615ae5d7a14b6da71f0499e6","firstName":"Nikitha","middleName":"","lastName":"","emailId":"driver@gmail.com","contact":"6900612344","role":"DRIVER","active":true,"__v":{"$numberInt":"0"},"userCode":"NCTP020001"};
-    // const user = {"_id":{"$oid":"615ae676a14b6da71f0499ed"},"firstName":"DeliveryBoy1","middleName":"","lastName":"","emailId":"deliveryboy@gmail.com","contact":"6900613445","role":"DELIVERY BOY","active":true,"__v":{"$numberInt":"0"},"userCode":"NCTP030001"};
     
     navigation.navigate('Tabs', {user})
     const otp = input1+input2+input3+input4+input5+input6;
     console.log(typeof(otp));
     try{
-        // console.log(typeof(emailIdOrContact))
-        // const response = await axios.post(`https://www.naataconnection.com/api/user/login_verifyOtp/`,{
-        //     emailIdOrContact: emailIdOrContact,
-        //     password: otp
-        // });
-        // console.log("Response from OTP api");
-        // console.log(response.data.user);
-        // const user = response.data.user;
-        // if(response.status==200){
-        //     navigation.navigate('Tabs', {user})
-        // }
+        console.log(typeof(emailIdOrContact))
+        const response = await axios.post(`https://www.naataconnection.com/api/user/login_verifyOtp/`,{
+            emailIdOrContact: emailIdOrContact,
+            password: otp
+        });
+        console.log("Response from OTP api");
+        console.log(response.data.user);
+        const user = response.data.user;
+        if(response.status==200){
+            navigation.navigate('Tabs', {user})
+        }
     }
     catch(err){
         console.log(err);

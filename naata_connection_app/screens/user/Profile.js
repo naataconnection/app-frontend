@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { SERVER_HOSTNAME, API_ENDPOINT } from "../../config";
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TextInput, ScrollView, TouchableOpacity, Button, TouchableHighlight } from 'react-native';
 import axios from 'axios';
+import DocumentPicker from 'react-native-document-picker';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -17,33 +18,320 @@ const Profile = (props) => {
     const [department, setDepartment] = useState(user.department ? user.department : "");
     const [gst, setGst] = useState(user.gst ? user.gst : "");
     const [secondarycontact, setSecondaryContact] = useState(user.secondaryContact ? user.secondaryContact : "");
+    const [profileImage, setProfileImage] = useState(null);
+    const [isProfileImage, setIsProfileImage] = useState("0");
+    const [age, setAge] = useState("");
+    const [emergencyContact, setEmergencyContact] = useState("");
+    const [drivingLicenseType, setDrivingLicenseType] = useState("");
+    const [drivingLicenseExpiryDate, setDrivingLicenseExpiryDate] = useState("");
+    const [bloodGroup, setBloodGroup] = useState("");
+    const [drivingLicense, setDrivingLicense] = useState(null);
+    const [isDrivingLicense, setIsDrivingLicense] = useState("0");
+    const [idCard1, setIdCard1] = useState(null);
+    const [isIdCard1, setIsIdCard1] = useState("0");
+    const [idCard2, setIdCard2] = useState(null);
+    const [isIdCard2, setIsIdCard2] = useState("0");
+
+    const selectDrivingLicense = async () => {
+        // Opening Document Picker to select one file
+        try {
+            const res = await DocumentPicker.pick({
+                // Provide which type of file you want user to pick
+                type: [DocumentPicker.types.allFiles],
+                // There can me more options as well
+                // DocumentPicker.types.allFiles
+                // DocumentPicker.types.images
+                // DocumentPicker.types.plainText
+                // DocumentPicker.types.audio
+                // DocumentPicker.types.pdf
+            });
+            // Printing the log realted to the file
+            console.log('res : ' + JSON.stringify(res));
+            alert('Successful');
+            // Setting the state to show single file attributes
+            setDrivingLicense(res);
+            setIsDrivingLicense("1");
+            //   file = res;
+        } catch (err) {
+            setDrivingLicense(null);
+            setIsDrivingLicense("1");
+            // Handling any exception (If any)
+            if (DocumentPicker.isCancel(err)) {
+                // If user canceled the document selection
+                alert('Canceled');
+            } else {
+                // For Unknown Error
+                alert('Unknown Error: ' + JSON.stringify(err));
+                throw err;
+            }
+        }
+    };
+
+    const selectIdCard1 = async () => {
+        // Opening Document Picker to select one file
+        try {
+            const res = await DocumentPicker.pick({
+                // Provide which type of file you want user to pick
+                type: [DocumentPicker.types.allFiles],
+                // There can me more options as well
+                // DocumentPicker.types.allFiles
+                // DocumentPicker.types.images
+                // DocumentPicker.types.plainText
+                // DocumentPicker.types.audio
+                // DocumentPicker.types.pdf
+            });
+            // Printing the log realted to the file
+            console.log('res : ' + JSON.stringify(res));
+            alert('Successful');
+            // Setting the state to show single file attributes
+            setIdCard1(res);
+            setIsIdCard1("1");
+            //   file = res;
+        } catch (err) {
+            setIdCard1(null);
+            setIsIdCard1("0");
+            // Handling any exception (If any)
+            if (DocumentPicker.isCancel(err)) {
+                // If user canceled the document selection
+                alert('Canceled');
+            } else {
+                // For Unknown Error
+                alert('Unknown Error: ' + JSON.stringify(err));
+                throw err;
+            }
+        }
+    };
+
+    const selectIdCard2 = async () => {
+        // Opening Document Picker to select one file
+        try {
+            const res = await DocumentPicker.pick({
+                // Provide which type of file you want user to pick
+                type: [DocumentPicker.types.allFiles],
+                // There can me more options as well
+                // DocumentPicker.types.allFiles
+                // DocumentPicker.types.images
+                // DocumentPicker.types.plainText
+                // DocumentPicker.types.audio
+                // DocumentPicker.types.pdf
+            });
+            // Printing the log realted to the file
+            console.log('res : ' + JSON.stringify(res));
+            alert('Successful');
+            // Setting the state to show single file attributes
+            setIdCard2(res);
+            setIsIdCard2("1");
+            //   file = res;
+        } catch (err) {
+            setIdCard2(null);
+            setIsIdCard2("0");
+            // Handling any exception (If any)
+            if (DocumentPicker.isCancel(err)) {
+                // If user canceled the document selection
+                alert('Canceled');
+            } else {
+                // For Unknown Error
+                alert('Unknown Error: ' + JSON.stringify(err));
+                throw err;
+            }
+        }
+    };
+
+
+
+
+    const selectProfileImage = async () => {
+        // Opening Document Picker to select one file
+        try {
+            const res = await DocumentPicker.pick({
+                // Provide which type of file you want user to pick
+                type: [DocumentPicker.types.allFiles],
+                // There can me more options as well
+                // DocumentPicker.types.allFiles
+                // DocumentPicker.types.images
+                // DocumentPicker.types.plainText
+                // DocumentPicker.types.audio
+                // DocumentPicker.types.pdf
+            });
+            // Printing the log realted to the file
+            console.log('res : ' + JSON.stringify(res));
+            alert('Successful');
+            // Setting the state to show single file attributes
+            setProfileImage(res);
+            setIsProfileImage("1");
+            //   file = res;
+        } catch (err) {
+            setProfileImage(null);
+            setIsProfileImage("0");
+            // Handling any exception (If any)
+            if (DocumentPicker.isCancel(err)) {
+                // If user canceled the document selection
+                alert('Canceled');
+            } else {
+                // For Unknown Error
+                alert('Unknown Error: ' + JSON.stringify(err));
+                throw err;
+            }
+        }
+    };
 
     const updateProfileAPI = async () => {
-        const body = {
-            companyName,
-            address,
-            city,
-            state,
-            department,
-            gst,
-            secondarycontact,
-            isProfileImage:0
-        }
 
-        const data = new FormData();
+        if (user.role == "CUSTOMER") {
+            const body = {
+                userCode: user.userCode,
+                companyName,
+                address,
+                city,
+                state,
+                department,
+                gst,
+                secondarycontact,
+                isProfileImage: "1"
+            }
+
+            const data = new FormData();
+
+            data.append('image', profileImage[0]);
+            Object.keys(body).forEach(key => {
+                data.append(key, body[key]);
+            });
+
+            try {
+                const response = await axios.post(`${API_ENDPOINT}/user/registerCustomer`, data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+
+                console.log("response from register API:", response);
+            }
+            catch (err) {
+                console.log("Error:", err);
+            }
+        }
+        else if (user.role == "DRIVER") {
+            const body = {
+                userCode: user.userCode,
+                address,
+                city,
+                state,
+                age,
+                drivingLicenseType,
+                drivingLicenseExpiryDate,
+                secondaryContact,
+                bloodGroup,
+                isDrivingLicense,
+                isIdCard1,
+                isIdCard2,
+                isProfileImage
+            };
+
+            const data = new FormData();
+
+            if (isDrivingLicense == "1")
+                data.append('files', drivingLicense[0]);
+
+            if (isIdCard1 == "1")
+                data.append('files', idCard1[0]);
+
+            if (isIdCard2 == "1")
+                data.append('files', idCard2[0]);
+
+            if (isProfileImage == "1")
+                data.append('files', profileImage[0]);
+
+            Object.keys(body).forEach(key => {
+                data.append(key, body[key]);
+            });
+
+            try {
+                const response = await axios.post(`${API_ENDPOINT}/user/registerDriver`, data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+
+                console.log("response from register API:", response);
+            }
+            catch (err) {
+                console.log("Error:", err);
+            }
+        }
+        else if (user.role == "DELIVERY BOY") {
+            const body={
+                address,
+                city,
+                state,
+                age,
+                secondaryContact,
+                emergencyContact,
+                bloodGroup,
+                isProfileImage,
+                isIdCard1,
+                isIdCard2
+            };
+
+            if (isIdCard1 == "1")
+                data.append('files', idCard1[0]);
+
+            if (isProfileImage == "1")
+                data.append('files', profileImage[0]);
+
+            Object.keys(body).forEach(key => {
+                data.append(key, body[key]);
+            });
+
+            try {
+                const response = await axios.post(`${API_ENDPOINT}/user/registerDeliveryBoy`, data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+
+                console.log("response from register API:", response);
+            }
+            catch (err) {
+                console.log("Error:", err);
+            }
+        }
+        else if (user.role == "MANAGER") {
+            const body={
+                userCode: user.userCode,
+                dateOfJoining,
+				secondaryContact,
+				emergencyContact,
+				bloodGroup,
+                isProfileImage,
+                isIdCard1
+            };
+
+            if (isIdCard1 == "1")
+            data.append('files', idCard1[0]);
+
+        if (isProfileImage == "1")
+            data.append('files', profileImage[0]);
 
         Object.keys(body).forEach(key => {
             data.append(key, body[key]);
         });
 
         try {
-            const response = await axios.post(`${API_ENDPOINT}/user/registerCustomer`, body);
+            const response = await axios.post(`${API_ENDPOINT}/user/registerManager`, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
 
             console.log("response from register API:", response);
         }
-        catch(err){
+        catch (err) {
             console.log("Error:", err);
         }
+
+
+        }
+
     }
 
     useEffect(() => {
@@ -190,6 +478,28 @@ const Profile = (props) => {
                         </View>
                         {additionalInfo != null &&
                             <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Profile Image
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectProfileImage}>
+                                                <Text style={styles.uploadText}>
+                                                    {profileImage != null ? (
+                                                        (profileImage[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.profileImage ? additionalInfo.profileImage : '-'}
+                                        </Text>
+                                    }
+                                </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Company Name
@@ -354,7 +664,7 @@ const Profile = (props) => {
                                 <View style={styles.lastCarouselRow}>
                                     {updateInfo ?
                                         <TouchableHighlight onPress={() => {
-                                            setUpdateInfo(false);
+                                            // setUpdateInfo(false);
                                             updateProfileAPI();
                                         }}>
                                             <View style={styles.CarouselButton}>
@@ -395,9 +705,20 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.address ? additionalInfo.address : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Address'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setAddress(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10, }]}
+                                        /> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.address ? additionalInfo.address : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -406,9 +727,22 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.city ? additionalInfo.city : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setCity(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.city ? additionalInfo.city : '-'}
+                                        </Text>
+                                    }
+
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -417,55 +751,22 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.state ? additionalInfo.state : '-'}
-                                    </Text>
-                                </View>
-                                <View style={styles.innerCarouselView}>
-                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Contact
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setState(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
                                         :
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
-                                    </Text>
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.state ? additionalInfo.state : '-'}
+                                        </Text>
+                                    }
                                 </View>
-                                <View style={styles.innerCarouselView}>
-                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Date of Joining
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                        :
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.dateOfJoining ? additionalInfo.dateOfJoining : '-'}
-                                    </Text>
-                                </View>
-                                <View style={styles.innerCarouselView}>
-                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Date of Termination
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                        :
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
-                                    </Text>
-                                </View>
-                            </View>}
-                    </View>}
-
-                {user.role == 'DELIVERY BOY' &&
-                    <View style={[styles.innerOrderContainer]}>
-                        <View style={styles.orderHeader}>
-                            <Text style={styles.heading}>
-                                {user.role}
-                            </Text>
-                        </View>
-                        {additionalInfo != null &&
-                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1', height: windowHeight * 0.5 }]}>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Age
@@ -473,53 +774,67 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.age ? additionalInfo.age : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setAge(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.age ? additionalInfo.age : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Blood Group
+                                        Driving License Type
                                     </Text>
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.bloodGroup ? additionalInfo.bloodGroup : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setDrivingLicenseType(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.drivingLicenseType ? additionalInfo.drivingLicenseType : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Address
+                                        Driving License Expiry Date
                                     </Text>
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.address ? additionalInfo.address : '-'}
-                                    </Text>
-                                </View>
-                                <View style={styles.innerCarouselView}>
-                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        City
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setDrivingLicenseExpiryDate(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
                                         :
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.city ? additionalInfo.city : '-'}
-                                    </Text>
-                                </View>
-                                <View style={styles.innerCarouselView}>
-                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        State
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
-                                        :
-                                    </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.state ? additionalInfo.state : '-'}
-                                    </Text>
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.drivingLicenseExpiryDate ? additionalInfo.drivingLicenseExpiryDate : '-'}
+                                        </Text>
+                                    }
                                 </View>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
@@ -528,10 +843,437 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setSecondaryContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                        </Text>
+                                    }
                                 </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Blood Group
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setBloodGroup(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.bloodGroup ? additionalInfo.bloodGroup : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Profile Image
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectProfileImage}>
+                                                <Text style={styles.uploadText}>
+                                                    {profileImage != null ? (
+                                                        (profileImage[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.profileImage ? additionalInfo.profileImage : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Driving License
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectDrivingLicense}>
+                                                <Text style={styles.uploadText}>
+                                                    {drivingLicense != null ? (
+                                                        (drivingLicense[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.drivingLicense ? additionalInfo.drivingLicense : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        ID Card 1
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectIdCard1}>
+                                                <Text style={styles.uploadText}>
+                                                    {idCard1 != null ? (
+                                                        (idCard1[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.idCard1 ? additionalInfo.idCard1 : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        ID Card 2
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectIdCard2}>
+                                                <Text style={styles.uploadText}>
+                                                    {idCard2 != null ? (
+                                                        (idCard2[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.idCard2 ? additionalInfo.idCard2 : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.lastCarouselRow}>
+                                    {updateInfo ?
+                                        <TouchableHighlight onPress={() => {
+                                            // setUpdateInfo(false);
+                                            updateProfileAPI();
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Save Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                        :
+                                        <TouchableHighlight onPress={() => {
+                                            setUpdateInfo(true);
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Update Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    }
+
+                                </View>
+
+
+
+                            </View>}
+                    </View>}
+
+                {user.role == 'DELIVERY BOY' &&
+                    <View style={styles.innerOrderContainer}>
+                        <View style={styles.orderHeader}>
+                            <Text style={styles.heading}>
+                                {user.role}
+                            </Text>
+                        </View>
+                        {additionalInfo != null &&
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Address
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Address'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setAddress(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10, }]}
+                                        /> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.address ? additionalInfo.address : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        City
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter City'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setCity(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.city ? additionalInfo.city : '-'}
+                                        </Text>
+                                    }
+
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        State
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter State'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setState(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.state ? additionalInfo.state : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Age
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter State'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setAge(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.age ? additionalInfo.age : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Secondary Contact
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setSecondaryContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Emergency Contact
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setEmergencyContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.emergencyContact ? additionalInfo.emergencyContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Blood Group
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setBloodGroup(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.emergencyContact ? additionalInfo.emergencyContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Profile Image
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectProfileImage}>
+                                                <Text style={styles.uploadText}>
+                                                    {profileImage != null ? (
+                                                        (profileImage[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.profileImage ? additionalInfo.profileImage : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        ID Card 1
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectIdCard1}>
+                                                <Text style={styles.uploadText}>
+                                                    {idCard1 != null ? (
+                                                        (idCard1[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.idCard1 ? additionalInfo.idCard1 : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        ID Card 2
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectIdCard2}>
+                                                <Text style={styles.uploadText}>
+                                                    {idCard2 != null ? (
+                                                        (idCard2[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.idCard2 ? additionalInfo.idCard2 : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.lastCarouselRow}>
+                                    {updateInfo ?
+                                        <TouchableHighlight onPress={() => {
+                                            // setUpdateInfo(false);
+                                            updateProfileAPI();
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Save Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                        :
+                                        <TouchableHighlight onPress={() => {
+                                            setUpdateInfo(true);
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Update Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    }
+
+                                </View>
+                            </View>}
+                    </View>}
+
+                    {user.role == 'MANAGER' &&
+                    <View style={styles.innerOrderContainer}>
+                        <View style={styles.orderHeader}>
+                            <Text style={styles.heading}>
+                                {user.role}
+                            </Text>
+                        </View>
+                        {additionalInfo != null &&
+                            <View style={[styles.carouselView, { backgroundColor: '#E3E3E1' }]}>
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
                                         Date of Joining
@@ -539,20 +1281,160 @@ const Profile = (props) => {
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.dateOfJoining ? additionalInfo.dateOfJoining : '-'}
-                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setDateOfJoining(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.dateOfJoining ? additionalInfo.dateOfJoining : '-'}
+                                        </Text>
+                                    }
                                 </View>
+                                
                                 <View style={styles.innerCarouselView}>
                                     <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
-                                        Date of Termination
+                                        Secondary Contact
                                     </Text>
                                     <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
                                         :
                                     </Text>
-                                    <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
-                                        {additionalInfo.dateOfTermination ? additionalInfo.dateOfTermination : '-'}
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setSecondaryContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.secondaryContact ? additionalInfo.secondaryContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Emergency Contact
                                     </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setEmergencyContact(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.emergencyContact ? additionalInfo.emergencyContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Blood Group
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <TextInput
+                                            placeholder='Enter Contact'
+                                            placeholderTextColor='#00B4D8'
+                                            onChangeText={(text) => {
+                                                setBloodGroup(text);
+                                            }}
+                                            clearTextOnFocus={true}
+                                            style={[styles.input, { flex: 10 }]}
+                                        />
+                                        :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.emergencyContact ? additionalInfo.emergencyContact : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        Profile Image
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectProfileImage}>
+                                                <Text style={styles.uploadText}>
+                                                    {profileImage != null ? (
+                                                        (profileImage[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.profileImage ? additionalInfo.profileImage : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.innerCarouselView}>
+                                    <Text style={[styles.cardText, { flex: 8, color: '#4E4E4E' }]}>
+                                        ID Card 1
+                                    </Text>
+                                    <Text style={[styles.cardText, { flex: 1, color: '#4E4E4E' }]}>
+                                        :
+                                    </Text>
+                                    {updateInfo ?
+                                        <View style={[{ flex: 10 }]}>
+                                            <TouchableHighlight onPress={selectIdCard1}>
+                                                <Text style={styles.uploadText}>
+                                                    {idCard1 != null ? (
+                                                        (idCard1[0].name)
+                                                    ) : 'Upload File'}
+                                                </Text>
+                                            </TouchableHighlight>
+                                        </View> :
+                                        <Text style={[styles.cardText, { flex: 10, color: '#4E4E4E' }]}>
+                                            {additionalInfo.idCard1 ? additionalInfo.idCard1 : '-'}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={styles.lastCarouselRow}>
+                                    {updateInfo ?
+                                        <TouchableHighlight onPress={() => {
+                                            // setUpdateInfo(false);
+                                            updateProfileAPI();
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Save Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                        :
+                                        <TouchableHighlight onPress={() => {
+                                            setUpdateInfo(true);
+                                        }}>
+                                            <View style={styles.CarouselButton}>
+                                                <Text style={styles.requestButton}>
+                                                    Update Details
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    }
+
                                 </View>
                             </View>}
                     </View>}

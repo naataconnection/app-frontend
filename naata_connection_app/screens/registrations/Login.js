@@ -25,21 +25,19 @@ const Login = ({ navigation }) => {
     }, []);
 
     const loginFunction = async (event)=>{
-        navigation.navigate('GetOTP',{emailIdOrContact:'driver@gmail.com'});
+        try{
+            const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {
+                emailIdOrContact
+            })
+            // console.log(`Response from login API: ${response._respon}`);
 
-        // try{
-        //     const response = await axios.post(`${API_ENDPOINT}/user/login_checkUserAndSendOtp/`, {
-        //         emailIdOrContact
-        //     })
-        //     // console.log(`Response from login API: ${response._respon}`);
-
-        //     if(response.status==200){
-        //         navigation.navigate('GetOTP',{emailIdOrContact});
-        //     }
-        // }
-        // catch(error){
-        //     console.log(`Error from login api = ${error}`);
-        // }
+            if(response.status==200){
+                navigation.navigate('GetOTP',{emailIdOrContact});
+            }
+        }
+        catch(error){
+            console.log(`Error from login api = ${error}`);
+        }
     }
 
     const [emailIdOrContact, setEmailOrContact] = useState('');
